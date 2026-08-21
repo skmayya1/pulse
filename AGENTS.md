@@ -50,9 +50,9 @@
 
 **RSpec:** Use readable `describe` and `context` blocks, verify observable behavior rather than implementation, and avoid `receive_message_chain`, `allow_any_instance_of`, and mocks of internal application services.
 
-**Commands:** Run `bundle exec rspec` for the full suite, `bundle exec rspec spec/path/to_spec.rb` for a file, and `bundle exec rspec spec/path/to_spec.rb:25` for a line. Use `bundle exec rubocop -a`, `bin/brakeman --no-pager`, `bundle exec bundler-audit check --update`, `bin/rails db:migrate`, `bin/rails db:migrate:status`, and `bin/rails console` as needed.
+**Commands:** Run `bundle exec rspec` for the full suite, `bundle exec rspec spec/path/to_spec.rb` for a file, and `bundle exec rspec spec/path/to_spec.rb:25` for a line. Use `bun run lint`, `bun run format`, `bun run format:fix`, `bun run erb:format:check`, `bin/brakeman --no-pager`, `bundle exec bundler-audit check --update`, `bin/rails db:migrate`, `bin/rails db:migrate:status`, and `bin/rails console` as needed.
 
-**Quality:** Run the relevant tests, RuboCop, and security checks for every change. Follow the repository configuration; do not bypass failures without documenting why.
+**Quality:** StandardRB formats and lints Ruby, Herb formats ERB, and Biome formats and lints JavaScript and CSS. Run the relevant tests, `bun run lint`, `bun run format`, and security checks for every change. Follow the repository configuration; do not bypass failures without documenting why.
 
 **Routes and APIs:** Keep routes RESTful, version public APIs deliberately, validate parameters explicitly, and update API documentation and request specs whenever a contract changes.
 

@@ -13,12 +13,23 @@
     "launch": "./tmux.sh",
     "services:start": "mise exec -- bash scripts/services-start.sh",
     "setup": "mise install && bun run services:start && mise exec -- bin/setup --skip-server",
-    "lint": "mise exec -- bundle exec rubocop",
+    "lint": "bun run lint:ruby && bun run lint:js",
+    "lint:ruby": "mise exec -- bundle exec standardrb",
+    "lint:js": "biome lint app/javascript app/assets/stylesheets",
+    "format": "bun run lint:ruby && bun run erb:format:check && bun run format:js",
+    "format:fix": "mise exec -- bundle exec standardrb --fix && bun run erb:format:all && bun run format:js:fix",
+    "format:js": "biome format app/javascript app/assets/stylesheets",
+    "format:js:fix": "biome format --write app/javascript app/assets/stylesheets",
+    "erb:format": "herb-format app/views app/components",
+    "erb:format:check": "herb-format --check app/views app/components",
+    "erb:format:all": "herb-format app/views app/components",
     "test": "mise exec -- bundle exec rspec"
   },
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.23",
+    "@biomejs/biome": "^2.4.14",
+    "@herb-tools/formatter": "^0.10.3",
     "@tailwindcss/cli": "^4.3.3",
     "tailwindcss": "^4.3.3"
   }

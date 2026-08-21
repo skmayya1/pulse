@@ -41,6 +41,10 @@ This opens tabs for the Rails server, Sidekiq, Clockwork, Rails console, and an 
 ```bash
 bun run test
 bun lint
+bun run format
+bun run format:fix
 bin/brakeman --no-pager
 bundle exec bundler-audit check --update
 ```
+
+`bun run lint` checks Ruby with StandardRB and JavaScript/CSS with Biome. `bun run format` also verifies ERB with Herb. Use `bun run format:fix` to apply the available fixes.
