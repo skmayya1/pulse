@@ -1,0 +1,25 @@
+{
+  "name": "pulse",
+  "private": true,
+  "scripts": {
+    "build": "bun bun.config.js",
+    "build:css": "bunx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
+    "watch:css": "bunx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify --watch=always",
+    "dev": "mise exec -- bin/dev",
+    "rails": "mise exec -- bin/rails server -b 0.0.0.0",
+    "sidekiq": "mise exec -- bundle exec sidekiq -C config/sidekiq.yml",
+    "clock": "mise exec -- bundle exec clockwork config/clock.rb",
+    "console": "mise exec -- bin/rails console",
+    "launch": "./tmux.sh",
+    "services:start": "mise exec -- bash scripts/services-start.sh",
+    "setup": "mise install && bun run services:start && mise exec -- bin/setup --skip-server",
+    "lint": "mise exec -- bundle exec rubocop",
+    "test": "mise exec -- bundle exec rspec"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.23",
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

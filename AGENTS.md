@@ -1,5 +1,9 @@
 **Stack:** Build Pulse with Ruby on Rails, Hotwire (Turbo and Stimulus), PostgreSQL, Redis, Sidekiq, Pundit, ViewComponent, and RSpec. Prefer Rails conventions and server-rendered HTML before custom JavaScript or a separate frontend API.
 
+**Toolchain:** Use `mise` and the versions in `.mise/config.toml`. Run `mise install` after cloning; use `mise exec -- <command>` when the shell has not activated the project toolchain.
+
+**Development:** Run `bun run setup` after cloning to install runtimes and dependencies, start local services, and prepare the database. Run `bun dev` to start Rails, Bun's JavaScript watcher, Tailwind's CSS watcher, Sidekiq, and Clockwork together; use `bun run services:start` to start or verify PostgreSQL and Redis independently. Run `bun run launch` for separate Rails server, Sidekiq, Clockwork, Rails console, and playground tabs.
+
 **Diff:** Keep changes small and surgical. Follow local patterns, make the fewest abstractions needed, and avoid unrelated refactors.
 
 **Architecture:** `controllers/` are thin request orchestrators; `models/` handle persistence, associations, validations, scopes, and simple predicates; `views/` contain ERB markup only; `services/` own business workflows and side effects; `queries/` hold complex database queries; `forms/` coordinate multi-model forms; `policies/` own Pundit authorization; `presenters/` format data for views; `components/` hold reusable tested ViewComponents; `jobs/` contains Sidekiq work; and `mailers/` always provide HTML and text templates.
