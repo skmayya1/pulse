@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "build": "bun bun.config.js",
-    "build:css": "bunx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
-    "watch:css": "bunx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify --watch=always",
+    "build:css": "bunx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --minify",
+    "watch:css": "bunx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --minify --watch=always",
     "dev": "mise exec -- bin/dev",
     "rails": "mise exec -- bin/rails server -b 0.0.0.0",
     "sidekiq": "mise exec -- bundle exec sidekiq -C config/sidekiq.yml",
@@ -15,11 +15,11 @@
     "setup": "mise install && bun run services:start && mise exec -- bin/setup --skip-server",
     "lint": "bun run lint:ruby && bun run lint:js",
     "lint:ruby": "mise exec -- bundle exec standardrb",
-    "lint:js": "biome lint app/javascript app/assets/stylesheets",
+    "lint:js": "biome lint tailwind.config.js app/javascript app/assets/stylesheets",
     "format": "bun run lint:ruby && bun run erb:format:check && bun run format:js",
     "format:fix": "mise exec -- bundle exec standardrb --fix && bun run erb:format:all && bun run format:js:fix",
-    "format:js": "biome format app/javascript app/assets/stylesheets",
-    "format:js:fix": "biome format --write app/javascript app/assets/stylesheets",
+    "format:js": "biome format tailwind.config.js app/javascript app/assets/stylesheets",
+    "format:js:fix": "biome format --write tailwind.config.js app/javascript app/assets/stylesheets",
     "erb:format": "herb-format app/views app/components",
     "erb:format:check": "herb-format --check app/views app/components",
     "erb:format:all": "herb-format app/views app/components",
@@ -31,6 +31,7 @@
     "@biomejs/biome": "^2.4.14",
     "@herb-tools/formatter": "^0.10.3",
     "@tailwindcss/cli": "^4.3.3",
+    "daisyui": "^5.7.20",
     "tailwindcss": "^4.3.3"
   }
 }

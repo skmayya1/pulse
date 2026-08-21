@@ -16,8 +16,6 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "cssbundling-rails"
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 gem "redis", ">= 5.0"
 gem "dotenv-rails"
@@ -57,7 +55,7 @@ group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
-  # Ruby style and linting, aligned with the NoScrubs Rails application
+  # Ruby style and linting
   gem "standard", ">= 1.35.1", require: false
   gem "standard-rails", require: false
 

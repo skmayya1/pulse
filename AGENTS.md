@@ -26,6 +26,8 @@
 
 **Hotwire:** Use Turbo Frames for localized page updates and Turbo Streams for server-pushed UI changes. Keep Stimulus controllers small, declarative, and limited to browser behavior; every important form and action must work with progressive enhancement.
 
+**Tailwind:** Use Pulse's semantic theme classes (`bg-primary`, `text-foreground`, `bg-card`, `border-border`, `text-muted-foreground`, and `bg-base-100`) rather than hard-coded palette colors for application UI. Use prefixed daisyUI component classes such as `d-btn`, `d-card`, and `d-badge`; combine them with Tailwind utilities for layout and product-specific presentation. The default theme is `pulse`; add `data-theme="night"` to a wrapping element to enable the matching dark palette and `dark:` variants. Keep Tailwind content paths and theme extensions in `tailwind.config.js`; keep runtime color tokens and daisyUI plugin/themes in `app/assets/stylesheets/application.css`.
+
 **Sidekiq:** Jobs must be small, idempotent, retry-safe, and passed only primitive identifiers—not Active Record objects. Re-fetch records in `perform`, define bounded retries for external failures, and guard against duplicate enqueues.
 
 **Scheduling:** Run publishing, analytics syncs, notifications, webhooks, and provider retries through Sidekiq. Store delivery state and provider IDs so work can be safely retried and audited.

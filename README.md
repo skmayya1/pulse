@@ -4,7 +4,7 @@ Pulse is a Rails social-media operations platform for influencers and small team
 
 ## Stack
 
-- Ruby on Rails, Hotwire (Turbo and Stimulus), and Tailwind CSS
+- Ruby on Rails, Hotwire (Turbo and Stimulus), Tailwind CSS, and daisyUI
 - PostgreSQL for persistence
 - Redis and Sidekiq for background work
 - Bun for JavaScript and CSS tooling
@@ -24,7 +24,7 @@ Install `libvips` (`brew install vips` on macOS) before generating Active Storag
 bun dev
 ```
 
-This starts Rails, Bun's JavaScript build watcher, Tailwind's CSS watcher, and Sidekiq. Use `bin/rails server` or `bundle exec sidekiq -C config/sidekiq.yml` individually when needed.
+This starts Rails, Bun's JavaScript build watcher, Tailwind's CSS watcher, Sidekiq, and Clockwork. Use `bin/rails server` or `bundle exec sidekiq -C config/sidekiq.yml` individually when needed.
 
 Use `bun run services:start` to start or verify PostgreSQL and Redis independently.
 
@@ -40,7 +40,7 @@ This opens tabs for the Rails server, Sidekiq, Clockwork, Rails console, and an 
 
 ```bash
 bun run test
-bun lint
+bun run lint
 bun run format
 bun run format:fix
 bin/brakeman --no-pager

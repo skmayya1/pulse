@@ -44,6 +44,6 @@ jobs:
       - name: Lint and check formatting
         run: |
           bundle exec standardrb
-          bunx biome lint app/javascript app/assets/stylesheets
+          bunx biome lint tailwind.config.js app/javascript app/assets/stylesheets
           bunx herb-format --check app/views app/components
-          bunx biome format app/javascript app/assets/stylesheets
+          bunx biome format tailwind.config.js app/javascript app/assets/stylesheets
