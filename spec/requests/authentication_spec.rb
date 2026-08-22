@@ -24,7 +24,7 @@ RSpec.describe "Passwordless authentication" do
   end
 
   it "returns to login after requesting an email code" do
-    post authentication_email_code_path, params: {authentication: {email_address: "creator@example.com"}}
+    post login_path, params: {authentication: {email_address: "creator@example.com"}}
 
     expect(response).to redirect_to(login_path)
   end
@@ -33,7 +33,7 @@ RSpec.describe "Passwordless authentication" do
     Authentication::OtpService.send_code(email_address: "creator@example.com", ip_address: "127.0.0.1")
 
     expect {
-      post session_path, params: {
+      post login_path, params: {
         authentication: {email_address: "creator@example.com", code: "123456"}
       }
     }.to change(User, :count).by(1)
@@ -46,7 +46,7 @@ RSpec.describe "Passwordless authentication" do
   end
 
   it "returns the same login error for invalid verification" do
-    post session_path, params: {
+    post login_path, params: {
       authentication: {email_address: "missing@example.com", code: "123456"}
     }
 
@@ -58,7 +58,7 @@ RSpec.describe "Passwordless authentication" do
     user = create(:user)
     sign_in_with_otp(user.email_address)
 
-    expect { delete session_path }.to change(Session, :count).by(-1)
+    expect { delete logout_path }.to change(Session, :count).by(-1)
     expect(response).to redirect_to(login_path)
     expect(response.cookies[Authentication::SESSION_COOKIE.to_s]).to be_nil
   end
@@ -83,6 +83,6 @@ RSpec.describe "Passwordless authentication" do
 
   def sign_in_with_otp(email_address)
     Authentication::OtpService.send_code(email_address:, ip_address: "127.0.0.1")
-    post session_path, params: {authentication: {email_address:, code: "123456"}}
+    post login_path, params: {authentication: {email_address:, code: "123456"}}
   end
 end

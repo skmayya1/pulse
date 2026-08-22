@@ -22,7 +22,7 @@
   <div class="divider my-6 text-xs text-base-content/45">OR</div>
 <% end %>
 
-<%= form_with url: authentication_email_code_path, scope: :authentication, class: "space-y-5" do |form| %>
+<%= form_with url: login_path, scope: :authentication, class: "space-y-5" do |form| %>
   <fieldset class="fieldset p-0">
     <%= form.label :email_address, "Email address", class: "fieldset-legend text-sm font-medium" %>
 

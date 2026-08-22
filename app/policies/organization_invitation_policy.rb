@@ -1,4 +1,10 @@
 class OrganizationInvitationPolicy < ApplicationPolicy
+  def accept?
+    user.present? &&
+      record.email_address == user.email_address &&
+      record.class.pending.exists?(id: record.id)
+  end
+
   def index?
     organization_admin?
   end

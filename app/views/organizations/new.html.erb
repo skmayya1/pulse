@@ -1,0 +1,37 @@
+<% content_for :title, "Create your organization · Pulse" %>
+
+<main class="flex min-h-screen items-center justify-center bg-base-100 px-6 py-12">
+  <section class="w-full max-w-md">
+    <header class="mb-4 space-y-2">
+      <h1 class="text-3xl font-semibold text-base-content">
+        Create your organization
+      </h1>
+
+      <p class="text-base text-base-content/60">
+        Choose a name for your Pulse workspace.
+      </p>
+    </header>
+
+    <%= form_with model: @organization, class: "space-y-6" do |form| %>
+      <% if @organization.errors.any? %>
+        <div class="alert alert-error" role="alert">
+          <span><%= @organization.errors.full_messages.to_sentence %></span>
+        </div>
+      <% end %>
+
+      <fieldset class="fieldset">
+        <%= form.label :name, "Organization name", class: "fieldset-legend" %>
+
+        <%= form.text_field :name,
+          required: true,
+          maxlength: 100,
+          autofocus: true,
+          autocomplete: "organization",
+          placeholder: "My organization",
+          class: "input input-bordered w-full" %>
+      </fieldset>
+
+      <%= form.submit "Create organization", class: "btn btn-primary w-full" %>
+    <% end %>
+  </section>
+</main>

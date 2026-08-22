@@ -11,7 +11,7 @@
   </p>
 </header>
 
-<%= form_with url: session_path, scope: :authentication, class: "space-y-5" do |form| %>
+<%= form_with url: login_path, scope: :authentication, class: "space-y-5" do |form| %>
   <%= form.hidden_field :email_address, value: email_address %>
 
   <label class="otp otp-lg otp-primary">

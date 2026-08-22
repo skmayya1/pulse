@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   include Authentication
+  include OrganizationAccess
   include Pundit::Authorization
 
   def pundit_user

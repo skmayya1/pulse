@@ -7,7 +7,7 @@ module Authentication
     before_action :restore_authentication
     before_action :require_authentication
 
-    helper_method :current_session, :current_user, :signed_in?
+    helper_method :current_session, :current_user
   end
 
   class_methods do
@@ -17,9 +17,9 @@ module Authentication
   end
 
   def require_authentication
-    return if signed_in?
+    return if current_user.present?
 
-    session[:return_to_after_authenticating] = request.fullpath if request.get? || request.head?
+    session[:return_to_after_authentication] = request.fullpath if request.get? || request.head?
     redirect_to login_path
   end
 
@@ -43,7 +43,7 @@ module Authentication
   end
 
   def start_new_session_for(user)
-    @return_to_after_authenticating = session.delete(:return_to_after_authenticating)
+    @return_to_after_authentication = session.delete(:return_to_after_authentication)
     reset_session
 
     issued = Session.issue_for(
@@ -68,12 +68,11 @@ module Authentication
   end
 
   def post_authentication_url
-    @return_to_after_authenticating.presence || root_path
+    @return_to_after_authentication.presence || root_path
   end
 
   def current_session = Current.session
   def current_user = Current.user
-  def signed_in? = current_user.present?
 
   private
 

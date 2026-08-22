@@ -1,14 +1,15 @@
 Rails.application.routes.draw do
   get "up" => "rails/health#show", :as => :rails_health_check
 
-  get "/auth/login", to: "sessions#new", as: :login
-  resource :session, only: [:create, :destroy]
-  namespace :authentication do
-    resource :email_code, only: :create
-  end
+  get "/auth/login", to: "authentication#new", as: :login
+  post "/auth/login", to: "authentication#create"
+  delete "/auth/logout", to: "authentication#destroy", as: :logout
 
-  get "/auth/:provider/callback", to: "omniauth_callbacks#create"
-  get "/auth/failure", to: "omniauth_callbacks#failure"
+  get "/auth/:provider/callback", to: "authentication#google_callback"
+  get "/auth/failure", to: "authentication#failure"
+
+  resources :organization_invitations, only: :show, param: :token
+  resources :organizations, only: [:new, :create]
 
   root "home#index"
 end

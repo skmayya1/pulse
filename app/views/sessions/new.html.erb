@@ -6,9 +6,9 @@
     <div class="flex flex-1 items-center justify-center py-12">
       <section class="w-full max-w-sm" aria-labelledby="sign-in-title">
         <% if email_address.present? %>
-          <%= render "code_form", email_address: email_address %>
+          <%= render "sessions/code_form", email_address: email_address %>
         <% else %>
-          <%= render "email_form",
+          <%= render "sessions/email_form",
             google_oauth_enabled: Rails.application.config.x.authentication.google_oauth_enabled %>
         <% end %>
       </section>

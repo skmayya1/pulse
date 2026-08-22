@@ -3,6 +3,17 @@ require "rails_helper"
 RSpec.describe OrganizationInvitationPolicy do
   after { Current.clear }
 
+  it "allows only the matching user to accept an active invitation" do
+    invitation = create(:organization_invitation)
+    invited_user = create(:user, email_address: invitation.email_address)
+
+    expect(policy_for(invited_user, invitation)).to be_accept
+    expect(policy_for(create(:user), invitation)).not_to be_accept
+
+    invitation.update!(revoked_at: Time.current)
+    expect(policy_for(invited_user, invitation)).not_to be_accept
+  end
+
   it "denies members and users outside the organization" do
     organization = create(:organization)
     invitation = build(:organization_invitation, organization:)
