@@ -52,4 +52,29 @@ class ApplicationPolicy
 
     attr_reader :context, :user, :scope
   end
+
+  private
+
+  def organization
+    return record if record.is_a?(Organization)
+    record.organization if record.respond_to?(:organization)
+  end
+
+  def organization_membership
+    return unless user && organization
+
+    @organization_membership ||= user.organization_memberships.find_by(organization:)
+  end
+
+  def organization_member?
+    organization_membership.present?
+  end
+
+  def organization_admin?
+    organization_membership&.role_at_least?(:admin) || false
+  end
+
+  def organization_owner?
+    organization_membership&.owner? || false
+  end
 end

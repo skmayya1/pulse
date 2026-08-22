@@ -1,5 +1,9 @@
 class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
+  has_many :organization_memberships, dependent: :restrict_with_error
+  has_many :organizations, through: :organization_memberships
+  has_many :organization_invitations, foreign_key: :invited_by_id, dependent: :restrict_with_error,
+    inverse_of: :invited_by
 
   normalizes :email_address, with: ->(email_address) { email_address.strip.downcase }
   normalizes :google_uid, with: ->(google_uid) { google_uid.strip.presence }
