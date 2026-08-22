@@ -40,6 +40,8 @@ module Pulse
     config.x.redis_url = ENV.fetch("REDIS_URL") do
       Rails.application.credentials.redis_url.presence || "redis://localhost:6379/1"
     end
+    config.x.cache_redis_url = ENV.fetch("CACHE_REDIS_URL", "redis://localhost:6379/2")
+    config.x.authentication.development_otp_code = nil
 
     # Don't generate system test files.
     config.generators.system_tests = nil

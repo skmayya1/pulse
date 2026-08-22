@@ -1,245 +1,79 @@
 @import "tailwindcss";
-@config "../../../tailwind.config.js";
-
-@font-face {
-  font-family: "Inter Variable";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 100 900;
-  src: url("inter-latin-wght-normal.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Inter Variable";
-  font-style: italic;
-  font-display: swap;
-  font-weight: 100 900;
-  src: url("inter-latin-wght-italic.woff2") format("woff2");
-}
 
 @plugin "daisyui" {
   themes: false;
-  exclude: rootcolor, rootscrollgutter, rootscrolllock, scrollbar, reset;
-  prefix: "d-";
 }
 
 @plugin "daisyui/theme" {
-  name: "pulse";
+  name: "light";
   default: true;
   prefersdark: false;
   color-scheme: light;
-  --color-primary: hsl(248 100% 63%);
-  --color-primary-content: hsl(0 0% 100%);
-  --color-secondary: hsl(249 100% 97%);
-  --color-secondary-content: hsl(220.9 39.3% 11%);
-  --color-accent: hsl(220 14.3% 95.9%);
-  --color-accent-content: hsl(220.9 39.3% 11%);
-  --color-neutral: hsl(220 14.3% 95.9%);
-  --color-neutral-content: hsl(220.9 39.3% 11%);
-  --color-base-100: hsl(0 0% 100%);
-  --color-base-200: hsl(220 20% 98%);
-  --color-base-300: hsl(220 13% 91%);
-  --color-base-content: hsl(220 39% 11%);
-  --color-info: hsl(220 14.3% 95.9%);
-  --color-info-content: hsl(220.9 39.3% 11%);
-  --color-success: hsl(136 86% 34%);
-  --color-success-content: hsl(0 0% 100%);
-  --color-warning: hsl(45 93% 73%);
-  --color-warning-content: hsl(220.9 39.3% 11%);
-  --color-error: hsl(0 84.2% 60.2%);
-  --color-error-content: hsl(0 0% 100%);
-  --radius-box: 0.5rem;
-  --radius-field: 0.4rem;
+  --color-base-100: oklch(98% 0.002 247.839);
+  --color-base-200: oklch(96% 0.003 264.542);
+  --color-base-300: oklch(92% 0.006 264.531);
+  --color-base-content: oklch(21% 0.034 264.665);
+  --color-primary: oklch(0% 0 0);
+  --color-primary-content: oklch(100% 0 0);
+  --color-secondary: oklch(0% 0 0);
+  --color-secondary-content: oklch(100% 0 0);
+  --color-accent: oklch(82% 0.119 306.383);
+  --color-accent-content: oklch(29% 0.149 302.717);
+  --color-neutral: oklch(21% 0.034 264.665);
+  --color-neutral-content: oklch(98% 0.002 247.839);
+  --color-info: oklch(60% 0.126 221.723);
+  --color-info-content: oklch(98% 0.019 200.873);
+  --color-success: oklch(59% 0.145 163.225);
+  --color-success-content: oklch(97% 0.021 166.113);
+  --color-warning: oklch(64% 0.222 41.116);
+  --color-warning-content: oklch(98% 0.016 73.684);
+  --color-error: oklch(58% 0.253 17.585);
+  --color-error-content: oklch(96% 0.015 12.422);
+  --radius-selector: 0.5rem;
+  --radius-field: 1rem;
+  --radius-box: 1rem;
+  --size-selector: 0.1875rem;
+  --size-field: 0.25rem;
   --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
 @plugin "daisyui/theme" {
-  name: "night";
+  name: "dark";
   default: false;
   prefersdark: true;
   color-scheme: dark;
-  --color-primary: hsl(248 100% 63%);
-  --color-primary-content: hsl(0 0% 100%);
-  --color-secondary: hsl(222 47% 18%);
-  --color-secondary-content: hsl(210 40% 98%);
-  --color-accent: hsl(217 33% 24%);
-  --color-accent-content: hsl(210 40% 98%);
-  --color-neutral: hsl(222 47% 11%);
-  --color-neutral-content: hsl(210 40% 98%);
-  --color-base-100: hsl(222 47% 11%);
-  --color-base-200: hsl(217 33% 17%);
-  --color-base-300: hsl(217 33% 24%);
-  --color-base-content: hsl(210 40% 98%);
-  --color-info: hsl(217 91% 60%);
-  --color-info-content: hsl(222 47% 11%);
-  --color-success: hsl(142 71% 45%);
-  --color-success-content: hsl(222 47% 11%);
-  --color-warning: hsl(38 92% 50%);
-  --color-warning-content: hsl(0 0% 100%);
-  --color-error: hsl(0 84% 60%);
-  --color-error-content: hsl(210 40% 98%);
-  --radius-box: 0.5rem;
-  --radius-field: 0.4rem;
+  --color-base-100: oklch(14% 0 0);
+  --color-base-200: oklch(20% 0 0);
+  --color-base-300: oklch(26% 0 0);
+  --color-base-content: oklch(97% 0 0);
+  --color-primary: oklch(83% 0.145 321.434);
+  --color-primary-content: oklch(29% 0.136 325.661);
+  --color-secondary: oklch(90% 0.182 98.111);
+  --color-secondary-content: oklch(28% 0.066 53.813);
+  --color-accent: oklch(81% 0.117 11.638);
+  --color-accent-content: oklch(27% 0.105 12.094);
+  --color-neutral: oklch(14% 0 0);
+  --color-neutral-content: oklch(98% 0 0);
+  --color-info: oklch(68% 0.169 237.323);
+  --color-info-content: oklch(97% 0.013 236.62);
+  --color-success: oklch(72% 0.219 149.579);
+  --color-success-content: oklch(98% 0.018 155.826);
+  --color-warning: oklch(76% 0.188 70.08);
+  --color-warning-content: oklch(98% 0.022 95.277);
+  --color-error: oklch(65% 0.241 354.308);
+  --color-error-content: oklch(97% 0.014 343.198);
+  --radius-selector: 0.5rem;
+  --radius-field: 1rem;
+  --radius-box: 1rem;
+  --size-selector: 0.1875rem;
+  --size-field: 0.25rem;
   --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
-:root,
-[data-theme="pulse"] {
-  color-scheme: light;
-  --pulse-background: 0 0% 100%;
-  --pulse-foreground: 224 71.4% 4.1%;
-  --pulse-card: 0 0% 100%;
-  --pulse-card-foreground: 224 71.4% 4.1%;
-  --pulse-popover: 0 0% 100%;
-  --pulse-popover-foreground: 224 71.4% 4.1%;
-  --pulse-primary: 248 100% 63%;
-  --pulse-primary-foreground: 0 0% 100%;
-  --pulse-secondary: 249 100% 97%;
-  --pulse-secondary-foreground: 220.9 39.3% 11%;
-  --pulse-muted: 247 100% 98%;
-  --pulse-muted-foreground: 0 0% 34%;
-  --pulse-accent: 220 14.3% 95.9%;
-  --pulse-accent-dark: 264 62% 29%;
-  --pulse-accent-foreground: 220.9 39.3% 11%;
-  --pulse-success: 136 86% 34%;
-  --pulse-success-foreground: 0 0% 100%;
-  --pulse-destructive: 0 84.2% 60.2%;
-  --pulse-destructive-foreground: 210 20% 98%;
-  --pulse-warning: 45 93% 73%;
-  --pulse-warning-foreground: 220.9 39.3% 11%;
-  --pulse-info: 220 14.3% 95.9%;
-  --pulse-border: 220 13% 91%;
-  --pulse-border-secondary: 248 100% 94%;
-  --pulse-input: 220 13% 91%;
-  --pulse-ring: 262.1 83.3% 57.8%;
-  --pulse-disabled: 0 0% 67%;
-  --pulse-base-100: 0 0% 100%;
-  --pulse-base-200: 220 20% 98%;
-  --pulse-base-300: 220 13% 91%;
-  --pulse-base-content: 220 39% 11%;
-  --pulse-radius: 0.5rem;
-}
-
-[data-theme="night"] {
-  color-scheme: dark;
-  --pulse-background: 222 47% 11%;
-  --pulse-foreground: 210 40% 98%;
-  --pulse-card: 222 47% 11%;
-  --pulse-card-foreground: 210 40% 98%;
-  --pulse-popover: 222 47% 11%;
-  --pulse-popover-foreground: 210 40% 98%;
-  --pulse-primary: 248 100% 63%;
-  --pulse-primary-foreground: 0 0% 100%;
-  --pulse-secondary: 222 47% 18%;
-  --pulse-secondary-foreground: 210 40% 98%;
-  --pulse-muted: 217 33% 24%;
-  --pulse-muted-foreground: 215 20% 65%;
-  --pulse-accent: 217 33% 24%;
-  --pulse-accent-dark: 264 62% 50%;
-  --pulse-accent-foreground: 210 40% 98%;
-  --pulse-success: 142 71% 45%;
-  --pulse-success-foreground: 222 47% 11%;
-  --pulse-destructive: 0 84% 60%;
-  --pulse-destructive-foreground: 210 40% 98%;
-  --pulse-warning: 38 92% 50%;
-  --pulse-warning-foreground: 0 0% 100%;
-  --pulse-info: 217 91% 60%;
-  --pulse-border: 217 33% 24%;
-  --pulse-border-secondary: 222 47% 18%;
-  --pulse-input: 217 33% 24%;
-  --pulse-ring: 248 100% 63%;
-  --pulse-disabled: 215 20% 45%;
-  --pulse-base-100: 222 47% 11%;
-  --pulse-base-200: 217 33% 17%;
-  --pulse-base-300: 217 33% 24%;
-  --pulse-base-content: 210 40% 98%;
-}
-
-@layer base {
-  html {
-    font-family: var(--font-sans);
-  }
-
-  body {
-    background-color: hsl(var(--pulse-background));
-    color: hsl(var(--pulse-foreground));
-  }
-}
-
-/*
- * Keep daisyUI's behavior and theme colors while giving Pulse components a
- * consistent shape and density. Color declarations belong to the themes above.
- */
-@utility d-btn {
-  --d-btn-inset: none;
-  --d-btn-shadow: none;
-  @apply relative h-auto whitespace-nowrap border-0 shadow-none transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-90;
-}
-
-@utility d-btn-primary {
-  @apply shadow;
-}
-
-@utility d-btn-outline {
-  @apply border shadow-sm;
-}
-
-@utility d-btn-secondary {
-  @apply shadow-sm;
-}
-
-@utility d-btn-link {
-  @apply underline-offset-4;
-}
-
-@utility d-btn-xs {
-  @apply min-h-7 rounded-md px-3 py-1.5 text-xs sm:min-h-9 sm:rounded-lg sm:text-sm;
-}
-
-@utility d-btn-sm {
-  @apply min-h-9 rounded-lg px-4 py-3 text-sm sm:min-h-11 sm:rounded-[10px] sm:text-base;
-}
-
-@utility d-btn-lg {
-  @apply min-h-[52px] rounded-xl px-12 py-4 text-lg sm:min-h-14 sm:text-xl;
-}
-
-@utility d-btn-icon {
-  @apply size-9 min-h-0 p-0;
-}
-
-@utility d-input {
-  @apply h-auto min-h-0 rounded-xl border px-4 py-3 shadow-none outline-none transition-colors focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-60;
-}
-
-@utility d-select {
-  @apply h-auto min-h-0 rounded-xl border px-4 py-3 shadow-none outline-none transition-colors focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-60;
-}
-
-@utility d-textarea {
-  @apply h-auto min-h-0 rounded-xl border px-4 py-3 shadow-none outline-none transition-colors focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-60;
-}
-
-@utility d-tab {
-  @apply h-auto min-h-0 cursor-pointer border border-transparent text-sm font-medium leading-4 transition-[color,background-color,border-color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px];
-}
-
-@utility d-collapse {
-  @apply gap-0 rounded-lg border sm:rounded-2xl;
-}
-
-@utility d-collapse-title {
-  @apply p-2 text-left text-base font-medium sm:p-4 sm:text-lg;
-}
-
-@utility d-collapse-content {
-  @apply p-2 pt-0 text-base sm:p-4 sm:pt-0;
-}
-
-@utility d-dropdown-content {
-  @apply rounded-md border shadow;
-}
-
-@utility d-menu {
-  @apply p-2 pr-2.5;
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }

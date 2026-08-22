@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html data-theme="pulse">
+<html>
   <head>
     <title><%= content_for(:title) || "Pulse" %></title>
 
@@ -12,11 +12,43 @@
 
     <%= yield :head %>
 
+    <link
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.46.0/dist/tabler-icons.min.css"
+      rel="stylesheet"
+    >
+
+    <style>
+      @font-face {
+        font-family: "Inter";
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url("<%= asset_path("inter-variable.ttf") %>") format("truetype");
+      }
+
+      @font-face {
+        font-family: "Inter";
+        font-style: italic;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url("<%= asset_path("inter-variable-italic.ttf") %>") format("truetype");
+      }
+    </style>
+
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
   <body>
+    <% flash.to_hash.slice("notice", "alert").each do |type, message| %>
+      <div
+        class="alert <%= type.to_s == "alert" ? "alert-error" : "alert-info" %> mx-auto mt-4 max-w-2xl"
+        role="status"
+      >
+        <%= message %>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

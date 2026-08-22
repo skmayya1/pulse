@@ -1,0 +1,21 @@
+<% content_for :title, "Sign in · Pulse" %>
+<% email_address = @email_address || flash[:email_address] %>
+
+<main class="min-h-screen bg-base-100 text-base-content">
+  <div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-5 py-6 sm:px-8">
+    <div class="flex flex-1 items-center justify-center py-12">
+      <section class="w-full max-w-sm" aria-labelledby="sign-in-title">
+        <% if email_address.present? %>
+          <%= render "code_form", email_address: email_address %>
+        <% else %>
+          <%= render "email_form",
+            google_oauth_enabled: Rails.application.config.x.authentication.google_oauth_enabled %>
+        <% end %>
+      </section>
+    </div>
+
+    <footer class="text-center text-xs text-base-content/45">
+      Built for focused creator teams.
+    </footer>
+  </div>
+</main>

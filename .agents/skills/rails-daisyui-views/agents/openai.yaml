@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rails DaisyUI Views"
+  short_description: "Compose clear Rails views with daisyUI"
+  default_prompt: "Use $rails-daisyui-views to build this Pulse view with explicit partial locals and semantic daisyUI classes."

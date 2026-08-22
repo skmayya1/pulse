@@ -4,6 +4,7 @@ require_relative "environment"
 require "clockwork"
 
 module Clockwork
-  # Pulse has no recurring product jobs yet. Add named schedule entries here
-  # when a job has a defined cadence, idempotency strategy, and test coverage.
+  every(1.day, "sessions.prune", at: "03:00") do
+    Sessions::PruneExpiredJob.perform_later
+  end
 end

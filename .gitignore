@@ -1,5 +1,6 @@
 # Local reference repositories
-.repo/
+.repo/*
+!.repo/README.md
 
 # Local environment configuration
 .env

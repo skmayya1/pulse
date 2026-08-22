@@ -28,6 +28,14 @@ This starts Rails, Bun's JavaScript build watcher, Tailwind's CSS watcher, Sidek
 
 Use `bun run services:start` to start or verify PostgreSQL and Redis independently.
 
+## Authentication
+
+Pulse currently supports passwordless email OTP and optional Google sign-in.
+In development, `424242` is accepted as the OTP by default; set
+`DEVELOPMENT_OTP_CODE` in `.env` to use another six-digit code. Configure
+`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `APP_HOST` in `.env` to enable
+the Google sign-in button.
+
 ## tmux workspace
 
 ```bash

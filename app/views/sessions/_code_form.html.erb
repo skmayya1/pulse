@@ -1,0 +1,43 @@
+<%# locals: (email_address:) %>
+
+<header class="mb-4 space-y-2">
+  <h1 id="sign-in-title" class="text-3xl font-semibold tracking-tight">
+    Enter your code
+  </h1>
+
+  <p class="text-sm text-base-content/65">
+    We sent a six-digit code to
+    <span class="font-medium text-base-content"><%= email_address %></span>
+  </p>
+</header>
+
+<%= form_with url: session_path, scope: :authentication, class: "space-y-5" do |form| %>
+  <%= form.hidden_field :email_address, value: email_address %>
+
+  <label class="otp otp-lg otp-primary">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+
+    <%= form.text_field :code,
+      required: true,
+      autofocus: true,
+      inputmode: "numeric",
+      autocomplete: "one-time-code",
+      maxlength: 6,
+      pattern: "[0-9]{6}",
+      aria: {label: "Sign-in code"} %>
+  </label>
+
+  <%= form.submit "Verify and sign in", class: "btn btn-primary btn-lg w-full" %>
+<% end %>
+
+<div class="mt-4 text-center">
+  <%= link_to login_path, class: "btn btn-ghost btn-sm text-base-content/65" do %>
+    <i class="ti ti-arrow-left text-base" aria-hidden="true"></i>
+    Use a different email
+  <% end %>
+</div>

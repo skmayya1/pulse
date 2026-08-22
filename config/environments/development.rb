@@ -25,8 +25,7 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
   end
 
-  # Change to :null_store to avoid any caching.
-  config.cache_store = :memory_store
+  config.cache_store = :redis_cache_store, {url: Rails.application.config.x.cache_redis_url}
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
@@ -39,6 +38,7 @@ Rails.application.configure do
 
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+  config.x.authentication.development_otp_code = ENV.fetch("DEVELOPMENT_OTP_CODE", "424242")
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

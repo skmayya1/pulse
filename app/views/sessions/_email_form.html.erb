@@ -1,0 +1,42 @@
+<%# locals: (google_oauth_enabled:) %>
+
+<header class="mb-2 space-y-2">
+  <h1 id="sign-in-title" class="text-3xl font-semibold tracking-tight">
+    Welcome to Pulse.
+  </h1>
+
+  <p class="text-sm leading-6 text-base-content/65">
+    Sign in to continue to your workspace.
+  </p>
+</header>
+
+<% if google_oauth_enabled %>
+  <%= button_to "/auth/google_oauth2",
+    method: :post,
+    form: {data: {turbo: false}},
+    class: "btn btn-outline btn-lg w-full" do %>
+    <i class="ti ti-brand-google text-xl" aria-hidden="true"></i>
+    Continue with Google
+  <% end %>
+
+  <div class="divider my-6 text-xs text-base-content/45">OR</div>
+<% end %>
+
+<%= form_with url: authentication_email_code_path, scope: :authentication, class: "space-y-5" do |form| %>
+  <fieldset class="fieldset p-0">
+    <%= form.label :email_address, "Email address", class: "fieldset-legend text-sm font-medium" %>
+
+    <label class="input input-lg w-full bg-base-200">
+      <i class="ti ti-mail text-lg text-base-content/45" aria-hidden="true"></i>
+
+      <%= form.email_field :email_address,
+        required: true,
+        autofocus: true,
+        autocomplete: "email",
+        placeholder: "you@example.com",
+        class: "grow" %>
+    </label>
+  </fieldset>
+
+  <%= form.submit "Continue with email", class: "btn btn-primary btn-lg w-full" %>
+<% end %>

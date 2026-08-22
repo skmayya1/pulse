@@ -26,7 +26,9 @@
 
 **Hotwire:** Use Turbo Frames for localized page updates and Turbo Streams for server-pushed UI changes. Keep Stimulus controllers small, declarative, and limited to browser behavior; every important form and action must work with progressive enhancement.
 
-**Tailwind:** Use Pulse's semantic theme classes (`bg-primary`, `text-foreground`, `bg-card`, `border-border`, `text-muted-foreground`, and `bg-base-100`) rather than hard-coded palette colors for application UI. Use prefixed daisyUI component classes such as `d-btn`, `d-card`, and `d-badge`; combine them with Tailwind utilities for layout and product-specific presentation. The default theme is `pulse`; add `data-theme="night"` to a wrapping element to enable the matching dark palette and `dark:` variants. Keep Tailwind content paths and theme extensions in `tailwind.config.js`; keep runtime color tokens and daisyUI plugin/themes in `app/assets/stylesheets/application.css`.
+**Tailwind:** Use Tailwind CSS 4's CSS-first configuration in `app/assets/stylesheets/application.css`. Use standard daisyUI component and semantic color classes such as `btn`, `card`, `badge`, `bg-primary`, and `bg-base-100`; do not add a class prefix. Use the custom `light` theme by default and `dark` for the system dark preference. Add project-specific tokens or component overrides only when an implemented design requires them.
+
+**UI:** Prefer daisyUI components everywhere they fit before composing custom controls. Use its semantic color classes (`primary`, `neutral`, `base-*`, `info`, `success`, `warning`, `error`) instead of arbitrary color values. Use Tabler webfont icons from the shared layout when an icon improves clarity.
 
 **Sidekiq:** Jobs must be small, idempotent, retry-safe, and passed only primitive identifiers—not Active Record objects. Re-fetch records in `perform`, define bounded retries for external failures, and guard against duplicate enqueues.
 
@@ -62,6 +64,6 @@
 
 **Documentation:** Update setup, environment-variable, and operational documentation with any behavioral or configuration change. Use [PLAN.md](PLAN.md) only for product scope and MVP decisions.
 
-**Reference repositories:** `.repo/README.md` lists local, ignored repositories and links used only for planning and implementation inspiration. Inspect their current code before borrowing a pattern, then adapt it to Pulse's architecture, permissions, provider integrations, and product scope; never copy product-specific behavior blindly.
+**Reference repositories:** `.repo/` contains ignored shallow clones used only for planning and implementation inspiration; `.repo/README.md` maps each local folder to its source and useful patterns. Inspect current code before borrowing a pattern, then adapt it to Pulse's architecture, permissions, provider integrations, and product scope; never copy product-specific behavior blindly.
 
 **Scratch files:** Put temporary scripts and debugging artifacts in `/tmp`, then remove them. Do not commit generated files, local databases, logs, or credentials.
