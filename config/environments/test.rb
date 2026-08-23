@@ -22,6 +22,9 @@ Rails.application.configure do
   config.consider_all_requests_local = true
   config.cache_store = :memory_store
   config.active_job.queue_adapter = :test
+  config.active_record.encryption.primary_key = "test-primary-key" * 4
+  config.active_record.encryption.deterministic_key = "test-deterministic-key" * 3
+  config.active_record.encryption.key_derivation_salt = "test-key-derivation-salt" * 3
 
   # Render exception templates for rescuable exceptions and raise for other exceptions.
   config.action_dispatch.show_exceptions = :rescuable

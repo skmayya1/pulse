@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_22_214716) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_23_011502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "channels", force: :cascade do |t|
+    t.jsonb "configuration", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.boolean "enabled", default: true, null: false
+    t.string "icon", null: false
+    t.string "key", null: false
+    t.string "name", null: false
+    t.integer "position", default: 0, null: false
+    t.string "provider", null: false
+    t.datetime "updated_at", null: false
+    t.index ["enabled", "position"], name: "index_channels_on_enabled_and_position"
+    t.index ["key"], name: "index_channels_on_key", unique: true
+  end
 
   create_table "organization_invitations", force: :cascade do |t|
     t.datetime "accepted_at"
@@ -52,6 +66,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_22_214716) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "provider_connections", force: :cascade do |t|
+    t.text "access_token", null: false
+    t.string "avatar_url"
+    t.bigint "channel_id", null: false
+    t.datetime "connected_at", null: false
+    t.bigint "connected_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "disconnected_at"
+    t.string "handle"
+    t.datetime "last_synced_at"
+    t.jsonb "metadata", default: {}, null: false
+    t.string "name", null: false
+    t.bigint "organization_id", null: false
+    t.string "provider_account_id", null: false
+    t.string "provider_identity_id"
+    t.text "refresh_token"
+    t.string "scopes", default: [], null: false, array: true
+    t.string "status", default: "connected", null: false
+    t.datetime "token_expires_at"
+    t.datetime "updated_at", null: false
+    t.index ["channel_id", "provider_account_id"], name: "index_provider_connections_on_channel_and_provider_account", unique: true
+    t.index ["channel_id"], name: "index_provider_connections_on_channel_id"
+    t.index ["connected_by_id"], name: "index_provider_connections_on_connected_by_id"
+    t.index ["organization_id", "channel_id", "status"], name: "idx_on_organization_id_channel_id_status_e9334d1e9c"
+    t.index ["organization_id"], name: "index_provider_connections_on_organization_id"
+    t.index ["status", "token_expires_at"], name: "index_provider_connections_on_status_and_token_expires_at"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "expires_at", null: false
@@ -82,5 +124,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_22_214716) do
   add_foreign_key "organization_invitations", "users", column: "invited_by_id"
   add_foreign_key "organization_memberships", "organizations"
   add_foreign_key "organization_memberships", "users"
+  add_foreign_key "provider_connections", "channels"
+  add_foreign_key "provider_connections", "organizations"
+  add_foreign_key "provider_connections", "users", column: "connected_by_id"
   add_foreign_key "sessions", "users"
 end

@@ -4,6 +4,7 @@ class Organization < ApplicationRecord
   has_many :organization_memberships, dependent: :restrict_with_error
   has_many :members, through: :organization_memberships, source: :user
   has_many :organization_invitations, dependent: :restrict_with_error
+  has_many :provider_connections, dependent: :restrict_with_error
 
   normalizes :name, with: ->(name) { name.strip }
 

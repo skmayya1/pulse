@@ -42,6 +42,9 @@ module Pulse
     end
     config.x.cache_redis_url = ENV.fetch("CACHE_REDIS_URL", "redis://localhost:6379/2")
     config.x.authentication.development_otp_code = nil
+    config.active_record.encryption.primary_key = ENV["ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY"] if ENV["ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY"].present?
+    config.active_record.encryption.deterministic_key = ENV["ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY"] if ENV["ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY"].present?
+    config.active_record.encryption.key_derivation_salt = ENV["ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT"] if ENV["ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT"].present?
 
     # Don't generate system test files.
     config.generators.system_tests = nil
