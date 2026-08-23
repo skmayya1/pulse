@@ -1,0 +1,17 @@
+<%# locals: (organization_membership:) %>
+
+<li class="flex items-center justify-between gap-4 py-4">
+  <div class="min-w-0">
+    <p class="truncate font-medium text-base-content">
+      <%= organization_membership.user.name.presence || organization_membership.user.email_address %>
+    </p>
+
+    <% if organization_membership.user.name.present? %>
+      <p class="mt-1 truncate text-sm text-base-content/60">
+        <%= organization_membership.user.email_address %>
+      </p>
+    <% end %>
+  </div>
+
+  <span class="badge badge-outline p-2 text-xs capitalize"><%= organization_membership.role %></span>
+</li>

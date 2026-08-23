@@ -1,0 +1,19 @@
+<% content_for :title, "#{@page.fetch(:title)} · Settings · Pulse" %>
+
+<%= render "settings/layout", page: @page do %>
+  <header class="space-y-2">
+    <h1 class="text-3xl font-semibold tracking-tight text-base-content">
+      <%= @page.fetch(:title) %>
+    </h1>
+
+    <p class="text-base text-base-content/60">
+      <%= @page.fetch(:description) %>
+    </p>
+  </header>
+
+  <div class="mt-10 border-t border-base-300 pt-6">
+    <p class="text-sm text-base-content/60">
+      This settings section is ready for its first controls.
+    </p>
+  </div>
+<% end %>

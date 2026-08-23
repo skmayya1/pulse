@@ -1,0 +1,68 @@
+<% content_for :title, "#{@page.fetch(:title)} · Settings · Pulse" %>
+
+<%= render "settings/layout", page: @page do %>
+  <header class="flex items-center justify-between">
+    <h1 class="text-lg font-semibold text-base-content">
+      <%= @page.fetch(:title) %>
+    </h1>
+
+    <span class="text-sm text-base-content/60"><%= pluralize(@memberships.size, "member") %></span>
+  </header>
+
+  <section
+    class="mt-6 border-t border-base-300 pt-8"
+    aria-label="Organization members"
+  >
+    <ul class="divide-y divide-base-300">
+      <%= render partial: "settings/organization_membership", collection: @memberships %>
+    </ul>
+  </section>
+
+  <% if @can_manage_invitations %>
+    <section
+      class="mt-10 border-t border-base-300 pt-8"
+      aria-labelledby="invite-member-heading"
+    >
+      <h2
+        id="invite-member-heading"
+        class="text-base font-semibold text-base-content"
+      >
+        Invite a member
+      </h2>
+
+      <%= form_with scope: :organization_invitation, url: settings_organization_invitations_path, class: "mt-5 flex max-w-2xl items-end gap-3" do |form| %>
+        <%= form.email_field :email_address, class: "input min-w-0 flex-1", autocomplete: "email", placeholder: "name@example.com", required: true, aria: {label: "Email address"} %>
+
+        <%= form.select :role, @invitation_roles.map { |role| [role.humanize, role] }, {}, class: "select w-32", aria: {label: "Invitation role"} %>
+
+        <%= form.button "Send invite", class: "btn btn-primary" %>
+      <% end %>
+
+      <section
+        class="mt-10 border-t border-base-300 pt-8"
+        aria-labelledby="invitations-heading"
+      >
+        <div class="flex items-center justify-between">
+          <h2
+            id="invitations-heading"
+            class="text-base font-semibold text-base-content"
+          >
+            Pending invitations
+          </h2>
+
+          <span class="text-sm text-base-content/60"><%= pluralize(@invitations.size, "invitation") %></span>
+        </div>
+
+        <% if @invitations.any? %>
+          <ul class="mt-4 divide-y divide-base-300">
+            <%= render partial: "settings/organization_invitation", collection: @invitations %>
+          </ul>
+        <% else %>
+          <p class="mt-4 text-sm text-base-content/60">
+            No pending invitations.
+          </p>
+        <% end %>
+      </section>
+    </section>
+  <% end %>
+<% end %>

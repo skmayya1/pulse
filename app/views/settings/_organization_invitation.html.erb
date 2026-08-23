@@ -1,0 +1,16 @@
+<%# locals: (organization_invitation:) %>
+
+<li class="flex items-center justify-between gap-4 py-4">
+  <div class="min-w-0">
+    <p class="truncate font-medium text-base-content">
+      <%= organization_invitation.email_address %>
+    </p>
+
+    <p class="mt-1 text-sm text-base-content/60">
+      Invited by
+      <%= organization_invitation.invited_by.name.presence || organization_invitation.invited_by.email_address %>
+    </p>
+  </div>
+
+  <span class="badge badge-outline p-2 text-xs capitalize"><%= organization_invitation.role %></span>
+</li>
