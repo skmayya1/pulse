@@ -40,14 +40,7 @@
   </head>
 
   <body>
-    <% flash.to_hash.slice("notice", "alert").each do |type, message| %>
-      <div
-        class="alert <%= type.to_s == "alert" ? "alert-error" : "alert-info" %> mx-auto mt-4 max-w-2xl"
-        role="status"
-      >
-        <%= message %>
-      </div>
-    <% end %>
+    <%= render "application/flash", flash_messages: flash.to_hash.slice("notice", "alert") %>
 
     <%= yield %>
   </body>
