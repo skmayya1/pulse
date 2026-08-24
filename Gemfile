@@ -20,6 +20,7 @@ gem "cssbundling-rails"
 gem "redis", ">= 5.0"
 gem "dotenv-rails"
 gem "strong_migrations"
+gem "faraday", "~> 2.0"
 
 # Background jobs, authorization, and reusable server-rendered UI
 gem "sidekiq"
@@ -77,4 +78,5 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "foreman", require: false
+  gem "letter_opener_web"
 end

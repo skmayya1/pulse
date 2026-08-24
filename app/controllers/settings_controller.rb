@@ -47,43 +47,74 @@ class SettingsController < ApplicationController
   end
 
   def organization_general
-    render_page(:organization_general)
+    prepare_page(:organization_general)
+    @organization = current_organization
+    authorize @organization, :show?
+    @can_update_organization = policy(@organization).update?
+    render :organization_general
   end
 
   def organization_channels
-    render_page(:organization_channels)
+    prepare_page(:organization_channels)
+    authorize :settings, :show?
+
+    @channels = Channel.enabled.ordered
+    prepare_connection_catalog
   end
 
   def organization_members
-    @page = PAGES.fetch(:organization_members).merge(key: :organization_members)
-    @organization = current_user.organizations.sole
-    @organization_membership = current_user.organization_memberships.find_by!(organization: @organization)
-    authorize @organization, :show?
+    prepare_page(:organization_members)
+    authorize current_organization, :show?
 
-    @memberships = policy_scope(OrganizationMembership)
-      .where(organization: @organization)
-      .includes(:user)
-      .order(:created_at)
-    @can_manage_invitations = policy(OrganizationInvitation.new(organization: @organization, invited_by: current_user, role: :member)).create?
-    @invitations = pending_invitations if @can_manage_invitations
-    @invitation_roles = @organization_membership.owner? ? OrganizationInvitation.roles.keys : ["member"]
-
-    render :organization_members
+    @memberships = organization_memberships
+    prepare_invitations
   end
 
   private
 
   def render_page(page)
-    @page = PAGES.fetch(page).merge(key: page)
+    prepare_page(page)
     authorize :settings, :show?
     render :show
   end
 
-  def pending_invitations
-    policy_scope(OrganizationInvitation)
-      .where(organization: @organization)
-      .pending
-      .includes(:invited_by)
-      .order(created_at: :desc)
+  def prepare_page(page)
+    @page = PAGES.fetch(page).merge(key: page)
+  end
+
+  def prepare_connection_catalog
+    connections = ProviderConnections::OrganizationQuery.new(
+      scope: policy_scope(ProviderConnection),
+      organization: current_organization
+    )
+
+    @connections_by_channel_id = connections.visible.includes(:channel).group_by(&:channel_id)
+    @connection_counts = connections.active_counts
+    @reauthorization_channel_ids = connections.reauthorization_channel_ids
+    @configured_providers = Channel::PROVIDERS.index_with { Providers::Configuration.configured?(_1) }
+    @can_manage_connections = current_organization_membership.role_at_least?(:admin)
+  end
+
+  def organization_memberships
+    OrganizationMemberships::ListQuery.call(
+      scope: policy_scope(OrganizationMembership),
+      organization: current_organization
+    )
+  end
+
+  def prepare_invitations
+    invitation = OrganizationInvitation.new(
+      organization: current_organization,
+      invited_by: current_user,
+      role: :member
+    )
+    @can_manage_invitations = policy(invitation).create?
+    return unless @can_manage_invitations
+
+    @invitations = OrganizationInvitations::PendingQuery.call(
+      scope: policy_scope(OrganizationInvitation),
+      organization: current_organization
+    )
+    @invitation_roles = current_organization_membership.owner? ? OrganizationInvitation.roles.keys : ["member"]
   end
 end

@@ -1,0 +1,57 @@
+<%# locals: (channel:, connections_by_channel_id:, connection_counts:, reauthorization_channel_ids:, configured_providers:, can_manage:) %>
+
+<% connections = connections_by_channel_id.fetch(channel.id, []) %>
+<% connection_count = connection_counts.fetch(channel.id, 0) %>
+<% needs_reauthorization = reauthorization_channel_ids.include?(channel.id) %>
+<% configured = configured_providers.fetch(channel.provider, false) %>
+
+<section
+  id="channel-<%= channel.key %>"
+  class="rounded-box border border-base-300 bg-base-100 p-6"
+>
+  <header class="flex items-center justify-between gap-6">
+    <div class="flex min-w-0 items-center gap-4">
+      <span
+        class="
+          grid size-10 shrink-0 place-items-center rounded-box bg-base-200
+          text-base-content
+        "
+      >
+        <%= image_tag channel.icon, alt: "", class: "size-7 object-contain" %>
+      </span>
+
+      <div class="min-w-0">
+        <h2 class="text-base font-medium text-base-content">
+          <%= channel.name %>
+        </h2>
+
+        <% if connection_count.positive? %>
+          <p class="text-sm text-base-content/55">
+            <%= pluralize(connection_count, "account") %>
+          </p>
+        <% elsif needs_reauthorization %>
+          <p class="text-sm text-warning">Reauthentication required</p>
+        <% end %>
+      </div>
+    </div>
+
+    <% if !can_manage %>
+      <button type="button" class="btn btn-sm" disabled>Connect</button>
+    <% elsif configured %>
+      <%= button_to connection_count.positive? ? "Connect another" : needs_reauthorization ? "Reconnect" : "Connect",
+        settings_organization_channel_provider_connections_path(channel.key),
+        class: "btn btn-primary btn-sm",
+        form: {data: {turbo: false}} %>
+    <% else %>
+      <button type="button" class="btn btn-sm" disabled>Unavailable</button>
+    <% end %>
+  </header>
+
+  <% if connections.any? %>
+    <div class="mt-2 space-y-1 sm:ml-16">
+      <%= render partial: "settings/organization/channels/provider_connection",
+        collection: connections,
+        locals: {can_manage: can_manage} %>
+    </div>
+  <% end %>
+</section>

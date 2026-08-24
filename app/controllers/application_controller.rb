@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
   include Authentication
   include OrganizationAccess
+  include OrganizationContext
   include Pundit::Authorization
 
   def pundit_user

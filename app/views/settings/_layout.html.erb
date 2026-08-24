@@ -1,65 +1,65 @@
 <%# locals: (page:) %>
 
-<% navigation_sections = [
-  {
-    label: "Personal",
-    items: [
-      {key: :profile, label: "Profile", icon: "ti-user", path: settings_profile_path},
-      {key: :preferences, label: "Preferences", icon: "ti-adjustments", path: settings_preferences_path},
-      {key: :notifications, label: "Notifications", icon: "ti-bell", path: settings_notifications_path}
-    ]
-  },
-  {
-    label: "Organization",
-    items: [
-      {key: :organization_general, label: "General", icon: "ti-building", path: settings_organization_general_path},
-      {key: :organization_channels, label: "Channels", icon: "ti-plug-connected", path: settings_organization_channels_path},
-      {key: :organization_members, label: "Members", icon: "ti-users", path: settings_organization_members_path}
-    ]
-  }
-] %>
+<main class="min-h-screen bg-base-100">
+  <div class="drawer">
+    <input id="settings-drawer" type="checkbox" class="drawer-toggle lg:hidden">
 
-<main class="min-h-screen bg-base-100 px-8 py-10">
-  <div class="mx-auto max-w-7xl">
-    <header class="flex items-center gap-3">
-      <%= link_to root_path, class: "btn btn-ghost btn-sm btn-square", aria: {label: "Back to Pulse"} do %>
-        <i class="ti ti-arrow-left text-lg" aria-hidden="true"></i>
-      <% end %>
+    <div class="drawer-content min-w-0">
+      <header class="navbar min-h-16 border-b border-base-300 px-4 lg:hidden">
+        <label
+          for="settings-drawer"
+          aria-label="Open settings navigation"
+          class="btn btn-square btn-ghost drawer-button"
+        >
+          <i class="ti ti-menu-2 text-xl" aria-hidden="true"></i>
+        </label>
+      </header>
 
-      <h1 class="text-lg font-semibold text-base-content">Settings</h1>
-    </header>
-
-    <div class="mt-8 grid gap-10 md:grid-cols-[12rem_minmax(0,1fr)]">
-      <aside class="pt-2">
-        <nav aria-label="Settings navigation">
-          <% navigation_sections.each_with_index do |section, index| %>
-            <section class="<%= "mt-8" if index.positive? %>">
-              <h2 class="mb-3 text-xs font-medium uppercase text-base-content/45">
-                <%= section.fetch(:label) %>
-              </h2>
-
-              <ul class="menu w-full gap-1 p-0 text-base">
-                <% section.fetch(:items).each do |item| %>
-                  <li>
-                    <%= link_to item.fetch(:path), class: class_names("bg-base-200 text-base-content/70 font-medium": page.fetch(:key) == item.fetch(:key), "text-base-content/45": page.fetch(:key) != item.fetch(:key)) do %>
-                      <i
-                        class="ti <%= item.fetch(:icon) %> text-lg"
-                        aria-hidden="true"
-                      ></i>
-
-                      <span><%= item.fetch(:label) %></span>
-                    <% end %>
-                  </li>
-                <% end %>
-              </ul>
-            </section>
+      <div class="mx-auto max-w-7xl px-4 py-4 lg:px-8 lg:py-10">
+        <header class="flex items-center gap-3">
+          <%= link_to root_path, class: "btn btn-ghost btn-sm btn-square", aria: {label: "Back to Pulse"} do %>
+            <i class="ti ti-arrow-left text-lg" aria-hidden="true"></i>
           <% end %>
-        </nav>
-      </aside>
 
-      <section class="bg-base-100 p-12">
-        <%= yield %>
-      </section>
+          <h1 class="text-lg font-semibold text-base-content">
+            Settings
+          </h1>
+        </header>
+
+        <div class="lg:mt-8 lg:grid lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-10">
+          <aside class="hidden pt-2 lg:block">
+            <%= render "settings/navigation", page: page %>
+          </aside>
+
+          <section class="min-w-0 bg-base-100 py-6 lg:p-12">
+            <%= yield %>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-side z-50 lg:hidden">
+      <label
+        for="settings-drawer"
+        aria-label="Close settings navigation"
+        class="drawer-overlay"
+      ></label>
+
+      <aside class="min-h-full w-72 bg-base-100 p-6">
+        <header class="mb-8 flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-base-content">Settings</h2>
+
+          <label
+            for="settings-drawer"
+            aria-label="Close settings navigation"
+            class="btn btn-square btn-ghost btn-sm"
+          >
+            <i class="ti ti-x text-lg" aria-hidden="true"></i>
+          </label>
+        </header>
+
+        <%= render "settings/navigation", page: page %>
+      </aside>
     </div>
   </div>
 </main>

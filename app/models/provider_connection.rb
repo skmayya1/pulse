@@ -7,16 +7,23 @@ class ProviderConnection < ApplicationRecord
 
   enum :status, STATUSES.index_with(&:itself), validate: true
 
+  scope :active, -> { connected.where(disconnected_at: nil) }
+
   encrypts :access_token, :refresh_token
 
   normalizes :provider_account_id, :name, with: ->(value) { value.to_s.strip }
   normalizes :provider_identity_id, :handle, with: ->(value) { value.to_s.strip.presence }
 
   validates :provider_account_id, presence: true, uniqueness: {scope: :channel_id}
-  validates :name, :access_token, :connected_at, presence: true
+  validates :name, :connected_at, presence: true
+  validates :access_token, presence: true, unless: :disconnected?
 
   def provider
     channel.provider
+  end
+
+  def active?
+    connected? && disconnected_at.nil?
   end
 
   def serializable_hash(options = nil)

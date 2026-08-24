@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_23_011502) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_23_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -67,7 +67,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_23_011502) do
   end
 
   create_table "provider_connections", force: :cascade do |t|
-    t.text "access_token", null: false
+    t.text "access_token"
     t.string "avatar_url"
     t.bigint "channel_id", null: false
     t.datetime "connected_at", null: false

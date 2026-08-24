@@ -9,8 +9,12 @@ RSpec.describe ProviderConnectionPolicy do
     admin = create_member(connection.organization, :admin)
 
     expect(policy_for(member, connection)).to be_show
+    expect(policy_for(member, connection)).not_to be_create
     expect(policy_for(member, connection)).not_to be_update
+    expect(policy_for(member, connection)).not_to be_destroy
+    expect(policy_for(admin, connection)).to be_create
     expect(policy_for(admin, connection)).to be_update
+    expect(policy_for(admin, connection)).to be_destroy
   end
 
   it "scopes provider connections to the user's organizations" do

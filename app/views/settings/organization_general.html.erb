@@ -1,0 +1,45 @@
+<% content_for :title, "#{@page.fetch(:title)} · Settings · Pulse" %>
+
+<%= render "settings/layout", page: @page do %>
+  <h1 class="text-lg font-semibold text-base-content">General</h1>
+
+  <%= form_with model: @organization,
+    url: settings_organization_general_path,
+    method: :patch,
+    class: "mt-6 max-w-2xl space-y-8" do |form| %>
+    <% if @organization.errors.any? %>
+      <div class="alert alert-error" role="alert">
+        <span><%= @organization.errors.full_messages.to_sentence %></span>
+      </div>
+    <% end %>
+
+    <div class="space-y-5">
+      <fieldset class="fieldset">
+        <%= form.label :name, "Organization name", class: "fieldset-legend" %>
+
+        <%= form.text_field :name,
+          required: true,
+          maxlength: 100,
+          autocomplete: "organization",
+          disabled: !@can_update_organization,
+          class: "input w-full" %>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <%= form.label :time_zone, "Time zone", class: "fieldset-legend" %>
+
+        <%= form.time_zone_select :time_zone,
+          nil,
+          {},
+          disabled: !@can_update_organization,
+          class: "select w-full" %>
+      </fieldset>
+    </div>
+
+    <% if @can_update_organization %>
+      <div class="flex justify-end border-t border-base-300 pt-6">
+        <%= form.submit "Save changes", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

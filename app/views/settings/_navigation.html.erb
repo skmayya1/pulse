@@ -1,0 +1,42 @@
+<%# locals: (page:) %>
+
+<% navigation_sections = [
+  {
+    label: "Personal",
+    items: [
+      {key: :profile, label: "Profile", icon: "ti-user", path: settings_profile_path},
+      {key: :preferences, label: "Preferences", icon: "ti-adjustments", path: settings_preferences_path},
+      {key: :notifications, label: "Notifications", icon: "ti-bell", path: settings_notifications_path}
+    ]
+  },
+  {
+    label: "Organization",
+    items: [
+      {key: :organization_general, label: "General", icon: "ti-building", path: settings_organization_general_path},
+      {key: :organization_channels, label: "Channels", icon: "ti-plug-connected", path: settings_organization_channels_path},
+      {key: :organization_members, label: "Members", icon: "ti-users", path: settings_organization_members_path}
+    ]
+  }
+] %>
+
+<nav aria-label="Settings navigation">
+  <% navigation_sections.each_with_index do |section, index| %>
+    <section class="<%= "mt-8" if index.positive? %>">
+      <h2 class="mb-3 text-xs font-medium uppercase text-base-content/45">
+        <%= section.fetch(:label) %>
+      </h2>
+
+      <ul class="menu w-full gap-1 p-0 text-base">
+        <% section.fetch(:items).each do |item| %>
+          <li>
+            <%= link_to item.fetch(:path), class: class_names("bg-base-200 text-base-content/70 font-medium": page.fetch(:key) == item.fetch(:key), "text-base-content/45": page.fetch(:key) != item.fetch(:key)) do %>
+              <i class="ti <%= item.fetch(:icon) %> text-lg" aria-hidden="true"></i>
+
+              <span><%= item.fetch(:label) %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+</nav>

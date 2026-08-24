@@ -1,0 +1,15 @@
+<% content_for :title, "#{@page.fetch(:title)} · Settings · Pulse" %>
+
+<%= render "settings/layout", page: @page do %>
+  <h1 class="text-lg font-semibold text-base-content">Channels</h1>
+
+  <div class="mt-8 space-y-4">
+    <%= render partial: "settings/channel", collection: @channels, locals: {
+      connections_by_channel_id: @connections_by_channel_id,
+      connection_counts: @connection_counts,
+      reauthorization_channel_ids: @reauthorization_channel_ids,
+      configured_providers: @configured_providers,
+      can_manage: @can_manage_connections
+    } %>
+  </div>
+<% end %>

@@ -3,7 +3,7 @@ FactoryBot.define do
     sequence(:key) { |number| "channel_#{number}" }
     sequence(:name) { |number| "Pulse Channel #{number}" }
     provider { :meta }
-    icon { "ti-brand-meta" }
+    icon { "channels/facebook.png" }
     sequence(:position)
     enabled { true }
     configuration { {} }

@@ -48,4 +48,15 @@ RSpec.describe ProviderConnection do
 
     expect(duplicate).not_to be_valid
   end
+
+  it "allows disconnected accounts to have their credentials cleared" do
+    connection = build(:provider_connection, status: :disconnected, access_token: nil, refresh_token: nil, disconnected_at: Time.current)
+
+    expect(connection).to be_valid
+  end
+
+  it "requires an access token for connections that can contact a provider" do
+    expect(build(:provider_connection, status: :connected, access_token: nil)).not_to be_valid
+    expect(build(:provider_connection, status: :needs_reauthorization, access_token: nil)).not_to be_valid
+  end
 end

@@ -1,0 +1,47 @@
+<% content_for :title, "Select #{@channel.name} accounts · Pulse" %>
+
+<%= render "settings/layout", page: @page do %>
+  <h1 class="text-lg font-semibold text-base-content">Select accounts</h1>
+
+  <%= form_with url: settings_organization_channel_oauth_selection_path(@channel.key),
+    scope: :oauth_selection,
+    class: "mt-8 space-y-6" do |form| %>
+    <%= form.hidden_field :token, value: @selection_token %>
+
+    <fieldset class="space-y-3">
+      <legend class="sr-only"><%= @channel.name %> accounts</legend>
+
+      <% @candidates.each do |candidate| %>
+        <label
+          class="
+            flex cursor-pointer items-center gap-4 rounded-box border
+            border-base-300 p-4 has-checked:border-primary
+          "
+        >
+          <%= check_box_tag "oauth_selection[account_ids][]",
+            candidate.provider_account_id,
+            false,
+            class: "checkbox checkbox-primary",
+            id: "account_#{candidate.provider_account_id}" %>
+
+          <% if candidate.avatar_url.present? %>
+            <%= image_tag candidate.avatar_url, alt: "", class: "size-10 rounded-full bg-base-200 object-cover" %>
+          <% end %>
+
+          <span class="min-w-0">
+            <span class="block truncate text-base font-medium text-base-content"><%= candidate.name %></span>
+
+            <% if candidate.handle.present? %>
+              <span class="block truncate text-sm text-base-content/55"><%= candidate.handle %></span>
+            <% end %>
+          </span>
+        </label>
+      <% end %>
+    </fieldset>
+
+    <div class="flex justify-end gap-3">
+      <%= link_to "Cancel", settings_organization_channels_path, class: "btn btn-ghost" %>
+      <%= form.submit "Connect selected", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+<% end %>

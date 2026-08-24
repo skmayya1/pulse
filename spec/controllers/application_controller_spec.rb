@@ -14,7 +14,19 @@ RSpec.describe ApplicationController do
     expect(controller.pundit_user).to eq(Current)
     expect(described_class._helper_methods).to include(
       :current_session,
-      :current_user
+      :current_user,
+      :current_organization,
+      :current_organization_membership
     )
+  end
+
+  it "derives the current organization context without storing it in the session" do
+    membership = create(:organization_membership)
+    Current.establish!(create(:session, user: membership.user))
+    controller = described_class.new
+
+    expect(controller.current_organization).to eq(membership.organization)
+    expect(controller.current_organization_membership).to eq(membership)
+    expect(Current.attributes.keys).to contain_exactly(:session, :user)
   end
 end

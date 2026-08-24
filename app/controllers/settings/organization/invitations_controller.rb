@@ -1,11 +1,10 @@
 class Settings::Organization::InvitationsController < ApplicationController
   def create
-    organization = current_user.organizations.sole
-    invitation = organization.organization_invitations.new(invitation_attributes.merge(invited_by: current_user))
+    invitation = current_organization.organization_invitations.new(invitation_attributes.merge(invited_by: current_user))
     authorize invitation
 
     result = OrganizationInvitations::InviteService.call(
-      organization:,
+      organization: current_organization,
       invited_by: current_user,
       email_address: invitation.email_address,
       role: invitation.role

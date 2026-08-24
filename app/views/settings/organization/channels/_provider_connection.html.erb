@@ -1,0 +1,51 @@
+<%# locals: (provider_connection:, can_manage:) %>
+
+<article class="flex items-center justify-between gap-6 py-5">
+  <div class="flex min-w-0 items-center gap-4">
+    <% if provider_connection.avatar_url.present? %>
+      <%= image_tag provider_connection.avatar_url,
+        alt: "",
+        class: "size-11 rounded-full bg-base-200 object-cover" %>
+    <% else %>
+      <span
+        class="
+          grid size-11 place-items-center rounded-full bg-base-200
+          text-base-content/60
+        "
+      >
+        <i class="ti ti-user text-xl" aria-hidden="true"></i>
+      </span>
+    <% end %>
+
+    <div class="min-w-0">
+      <p class="truncate text-base font-medium text-base-content">
+        <%= provider_connection.name %>
+      </p>
+
+      <% if provider_connection.handle.present? %>
+        <p class="truncate text-sm text-base-content/55">
+          <%= provider_connection.handle %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <% if provider_connection.needs_reauthorization? && can_manage %>
+      <%= button_to "Reauthenticate",
+        settings_organization_channel_provider_connections_path(provider_connection.channel.key),
+        class: "btn btn-warning btn-sm",
+        form: {data: {turbo: false}} %>
+    <% elsif provider_connection.needs_reauthorization? %>
+      <span class="text-sm text-warning">Reauthentication required</span>
+    <% elsif provider_connection.connected? && can_manage %>
+      <%= button_to "Disconnect",
+        settings_organization_provider_connection_path(provider_connection),
+        method: :delete,
+        class: "btn btn-ghost btn-sm text-error",
+        form: {data: {turbo_confirm: "Disconnect #{provider_connection.name}?"}} %>
+    <% elsif provider_connection.disconnected? %>
+      <span class="text-sm text-base-content/55">Disconnected</span>
+    <% end %>
+  </div>
+</article>
