@@ -24,7 +24,7 @@ gem "faraday", "~> 2.0"
 
 # Background jobs, authorization, and reusable server-rendered UI
 gem "sidekiq"
-gem "clockwork", "~> 3.0"
+gem "clockwork", "~> 4.0"
 gem "pundit"
 gem "view_component"
 
