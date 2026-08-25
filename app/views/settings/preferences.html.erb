@@ -1,0 +1,43 @@
+<% content_for :title, "#{@page.fetch(:title)} · Settings · Pulse" %>
+
+<%= render "settings/layout", page: @page do %>
+  <h1 class="text-lg font-semibold text-base-content">Preferences</h1>
+
+  <fieldset class="fieldset mt-6 max-w-2xl">
+    <legend class="fieldset-legend">Appearance</legend>
+
+    <p class="label">
+      Choose how Pulse looks on this device. The choice is saved in your
+      browser.
+    </p>
+
+    <div class="join mt-2">
+      <button
+        type="button"
+        class="btn join-item"
+        data-set-theme=""
+        data-act-class="btn-active"
+      >
+        System
+      </button>
+
+      <button
+        type="button"
+        class="btn join-item"
+        data-set-theme="light"
+        data-act-class="btn-active"
+      >
+        Light
+      </button>
+
+      <button
+        type="button"
+        class="btn join-item"
+        data-set-theme="dark"
+        data-act-class="btn-active"
+      >
+        Dark
+      </button>
+    </div>
+  </fieldset>
+<% end %>

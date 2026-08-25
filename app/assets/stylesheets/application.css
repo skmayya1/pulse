@@ -44,26 +44,26 @@
   default: false;
   prefersdark: true;
   color-scheme: dark;
-  --color-base-100: oklch(14% 0 0);
-  --color-base-200: oklch(20% 0 0);
-  --color-base-300: oklch(26% 0 0);
-  --color-base-content: oklch(97% 0 0);
-  --color-primary: oklch(83% 0.145 321.434);
-  --color-primary-content: oklch(29% 0.136 325.661);
-  --color-secondary: oklch(90% 0.182 98.111);
-  --color-secondary-content: oklch(28% 0.066 53.813);
-  --color-accent: oklch(81% 0.117 11.638);
-  --color-accent-content: oklch(27% 0.105 12.094);
-  --color-neutral: oklch(14% 0 0);
+  --color-base-100: oklch(14% 0.005 285.823);
+  --color-base-200: oklch(21% 0.006 285.885);
+  --color-base-300: oklch(27% 0.006 286.033);
+  --color-base-content: oklch(96% 0.001 286.375);
+  --color-primary: oklch(62% 0.265 303.9);
+  --color-primary-content: oklch(97% 0.014 308.299);
+  --color-secondary: oklch(70% 0.213 47.604);
+  --color-secondary-content: oklch(98% 0.016 73.684);
+  --color-accent: oklch(72% 0.219 149.579);
+  --color-accent-content: oklch(98% 0.018 155.826);
+  --color-neutral: oklch(44% 0.017 285.786);
   --color-neutral-content: oklch(98% 0 0);
-  --color-info: oklch(68% 0.169 237.323);
-  --color-info-content: oklch(97% 0.013 236.62);
-  --color-success: oklch(72% 0.219 149.579);
-  --color-success-content: oklch(98% 0.018 155.826);
-  --color-warning: oklch(76% 0.188 70.08);
-  --color-warning-content: oklch(98% 0.022 95.277);
-  --color-error: oklch(65% 0.241 354.308);
-  --color-error-content: oklch(97% 0.014 343.198);
+  --color-info: oklch(70% 0.165 254.624);
+  --color-info-content: oklch(28% 0.091 267.935);
+  --color-success: oklch(76% 0.177 163.223);
+  --color-success-content: oklch(26% 0.051 172.552);
+  --color-warning: oklch(85% 0.199 91.936);
+  --color-warning-content: oklch(28% 0.066 53.813);
+  --color-error: oklch(71% 0.194 13.428);
+  --color-error-content: oklch(27% 0.105 12.094);
   --radius-selector: 0.5rem;
   --radius-field: 1rem;
   --radius-box: 1rem;
@@ -80,4 +80,37 @@
 
 .form-control {
   gap: 0.5rem;
+}
+
+.btn-ghost {
+  transition-property: color, box-shadow, transform;
+}
+
+.btn-ghost:is(:hover, :active, :focus-visible) {
+  --btn-bg: color-mix(in oklab, var(--color-base-content) 8%, #0000);
+  --btn-border: #0000;
+}
+
+@keyframes auto-dismiss {
+  0%,
+  88% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+[data-controller="auto-dismiss"] {
+  --auto-dismiss-ms: 5000;
+  animation: auto-dismiss calc(var(--auto-dismiss-ms) * 1ms) ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-controller="auto-dismiss"] {
+    animation: none;
+  }
 }

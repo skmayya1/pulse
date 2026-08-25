@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe Channel do
   it "accepts supported providers and rejects unknown ones" do
+    expect(build(:channel, provider: :instagram)).to be_valid
     expect(build(:channel, provider: :meta)).to be_valid
     expect(build(:channel, provider: :unknown)).not_to be_valid
   end
@@ -22,6 +23,17 @@ RSpec.describe Channel do
 
   it "defaults configuration to an empty object" do
     expect(build(:channel).configuration).to eq({})
+  end
+
+  it "upserts the catalog channels used by organization settings" do
+    Channel.upsert_catalog!
+
+    expect(Channel.ordered.map { |channel| [channel.key, channel.provider] }).to eq([
+      %w[instagram instagram],
+      %w[facebook meta],
+      %w[tiktok tiktok],
+      %w[youtube youtube]
+    ])
   end
 
   it "restricts catalog channel deletion while connections exist" do

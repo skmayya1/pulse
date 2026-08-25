@@ -1,6 +1,7 @@
 module Providers
   class Registry
     CLIENTS = {
+      "instagram" => Providers::Instagram::Client,
       "meta" => Providers::Meta::Client,
       "tiktok" => Providers::Tiktok::Client,
       "youtube" => Providers::Youtube::Client

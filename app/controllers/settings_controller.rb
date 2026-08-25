@@ -1,9 +1,5 @@
 class SettingsController < ApplicationController
   PAGES = {
-    overview: {
-      title: "Settings",
-      description: "Manage your personal profile and organization workspace."
-    },
     profile: {
       title: "Profile",
       description: "Manage your personal profile details."
@@ -31,15 +27,31 @@ class SettingsController < ApplicationController
   }.freeze
 
   def show
-    render_page(:overview)
+    authorize :settings, :show?
+    redirect_to settings_profile_path
   end
 
   def profile
-    render_page(:profile)
+    prepare_page(:profile)
+    @user = current_user
+    authorize @user, :show?
+  end
+
+  def update_profile
+    @user = current_user
+    authorize @user, :update?
+
+    if @user.update(profile_params)
+      redirect_to settings_profile_path, notice: "Profile updated."
+    else
+      prepare_page(:profile)
+      render :profile, status: :unprocessable_content
+    end
   end
 
   def preferences
-    render_page(:preferences)
+    prepare_page(:preferences)
+    authorize :settings, :show?
   end
 
   def notifications
@@ -47,11 +59,19 @@ class SettingsController < ApplicationController
   end
 
   def organization_general
-    prepare_page(:organization_general)
-    @organization = current_organization
+    prepare_organization_general
     authorize @organization, :show?
-    @can_update_organization = policy(@organization).update?
-    render :organization_general
+  end
+
+  def update_organization
+    prepare_organization_general
+    authorize @organization, :update?
+
+    if @organization.update(organization_params)
+      redirect_to settings_organization_general_path, notice: "Organization updated."
+    else
+      render :organization_general, status: :unprocessable_content
+    end
   end
 
   def organization_channels
@@ -80,6 +100,20 @@ class SettingsController < ApplicationController
 
   def prepare_page(page)
     @page = PAGES.fetch(page).merge(key: page)
+  end
+
+  def prepare_organization_general
+    prepare_page(:organization_general)
+    @organization = current_organization
+    @can_update_organization = policy(@organization).update?
+  end
+
+  def profile_params
+    params.require(:user).permit(:name)
+  end
+
+  def organization_params
+    params.require(:organization).permit(:name, :time_zone)
   end
 
   def prepare_connection_catalog

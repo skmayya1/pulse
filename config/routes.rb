@@ -15,10 +15,11 @@ Rails.application.routes.draw do
 
   get "/settings", to: "settings#show", as: :settings
   get "/settings/profile", to: "settings#profile", as: :settings_profile
+  patch "/settings/profile", to: "settings#update_profile"
   get "/settings/preferences", to: "settings#preferences", as: :settings_preferences
   get "/settings/notifications", to: "settings#notifications", as: :settings_notifications
   get "/settings/organization/general", to: "settings#organization_general", as: :settings_organization_general
-  patch "/settings/organization/general", to: "settings/organization/general#update"
+  patch "/settings/organization/general", to: "settings#update_organization"
   get "/settings/organization/channels", to: "settings#organization_channels", as: :settings_organization_channels
   get "/settings/organization/members", to: "settings#organization_members", as: :settings_organization_members
   post "/settings/organization/invitations", to: "settings/organization/invitations#create", as: :settings_organization_invitations

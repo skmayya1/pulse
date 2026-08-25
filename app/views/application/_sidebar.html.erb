@@ -1,0 +1,28 @@
+<%# locals: (organization:, user:, current: nil) %>
+
+<aside
+  class="
+    sticky top-0 flex h-dvh w-64 shrink-0 flex-col overflow-visible
+    border-r border-base-300 p-4
+  "
+  aria-label="Sidebar"
+>
+  <header class="px-2 pb-4">
+    <%= link_to root_path, class: "text-lg font-semibold tracking-tight text-base-content" do %>
+      Pulse
+    <% end %>
+  </header>
+
+  <%= link_to "#", class: "btn btn-primary w-full" do %>
+    <i class="ti ti-plus text-lg" aria-hidden="true"></i>
+    New post
+  <% end %>
+
+  <div class="min-h-0 flex-1 overflow-y-auto pt-6">
+    <%= render "application/sidebar_nav", current: current %>
+  </div>
+
+  <div class="border-t border-base-300 pt-4">
+    <%= render "application/sidebar_profile", organization:, user: %>
+  </div>
+</aside>

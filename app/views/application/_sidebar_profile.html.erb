@@ -1,0 +1,115 @@
+<%# locals: (organization:, user:) %>
+
+<% profile_name = user.name.presence || user.email_address.to_s.strip %>
+
+<div class="dropdown dropdown-top w-full">
+  <div
+    tabindex="0"
+    role="button"
+    class="
+      flex w-full cursor-pointer items-center gap-3 rounded-box p-2 text-left
+      hover:bg-base-200
+    "
+  >
+    <span
+      class="
+        grid size-8 shrink-0 place-items-center rounded-box bg-base-200
+        text-sm font-medium text-base-content
+      "
+      aria-hidden="true"
+    >
+      <%= profile_name.to_s.first %>
+    </span>
+
+    <span class="min-w-0 flex-1">
+      <span class="block truncate text-sm font-medium text-base-content">
+        <%= profile_name %>
+      </span>
+
+      <span class="block truncate text-xs text-base-content/45">
+        <%= organization.name %>
+      </span>
+    </span>
+
+    <i
+      class="ti ti-chevron-up text-base text-base-content/45"
+      aria-hidden="true"
+    ></i>
+  </div>
+
+  <ul
+    tabindex="-1"
+    class="
+      dropdown-content flex w-full flex-col gap-1 rounded-box border
+      border-base-300 bg-base-100 p-2 shadow-sm z-1
+    "
+  >
+    <li>
+      <label
+        class="
+          btn btn-ghost btn-block h-auto min-h-0 justify-between gap-3
+          py-1.5 font-normal text-base-content/45
+        "
+      >
+        <span class="flex items-center gap-2">
+          <i class="ti ti-moon text-base" aria-hidden="true"></i>
+          Dark mode
+        </span>
+
+        <input
+          type="checkbox"
+          value="dark"
+          class="toggle toggle-sm"
+          data-set-theme
+        >
+      </label>
+    </li>
+
+    <li>
+      <%= link_to settings_path,
+        class: "btn btn-ghost btn-block h-auto min-h-0 justify-start gap-2 py-1.5 font-normal text-base-content/45" do %>
+        <i class="ti ti-settings text-base" aria-hidden="true"></i>
+        Settings
+      <% end %>
+    </li>
+
+    <li>
+      <button
+        type="button"
+        class="
+          btn btn-ghost btn-block h-auto min-h-0 justify-start gap-2 py-1.5
+          font-normal text-error
+        "
+        onclick="sign_out_dialog.showModal()"
+      >
+        <i class="ti ti-logout text-base" aria-hidden="true"></i>
+        Sign out
+      </button>
+    </li>
+  </ul>
+</div>
+
+<dialog id="sign_out_dialog" class="modal">
+  <div class="modal-box border border-base-300">
+    <h3 class="text-lg font-bold">Sign out</h3>
+
+    <p class="py-4 text-base-content/70">
+      You will need to sign in again to get back to Pulse.
+    </p>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <button type="submit" class="btn">Close</button>
+      </form>
+
+      <%= button_to "Sign out",
+        logout_path,
+        method: :delete,
+        class: "btn btn-error" %>
+    </div>
+  </div>
+
+  <form method="dialog" class="modal-backdrop">
+    <button type="submit">close</button>
+  </form>
+</dialog>

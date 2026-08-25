@@ -40,7 +40,7 @@
     <% elsif configured %>
       <%= button_to connection_count.positive? ? "Connect another" : needs_reauthorization ? "Reconnect" : "Connect",
         settings_organization_channel_provider_connections_path(channel.key),
-        class: "btn btn-primary btn-sm",
+        class: "btn btn-accent btn-sm",
         form: {data: {turbo: false}} %>
     <% else %>
       <button type="button" class="btn btn-sm" disabled>Unavailable</button>

@@ -2,6 +2,15 @@
 
 <html>
   <head>
+    <script>
+      (() => {
+        const theme = localStorage.getItem("theme")
+        if (theme) {
+          document.documentElement.setAttribute("data-theme", theme)
+        }
+      })()
+    </script>
+
     <title><%= content_for(:title) || "Pulse" %></title>
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -36,6 +45,15 @@
     </style>
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+
+    <script src="https://cdn.jsdelivr.net/npm/theme-change@3.0.4/index.js"></script>
+
+    <script>
+      document.addEventListener("turbo:load", () => {
+        window.__tc && window.__tc.themeChange(false)
+      })
+    </script>
+
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 

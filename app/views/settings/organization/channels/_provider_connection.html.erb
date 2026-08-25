@@ -39,11 +39,14 @@
     <% elsif provider_connection.needs_reauthorization? %>
       <span class="text-sm text-warning">Reauthentication required</span>
     <% elsif provider_connection.connected? && can_manage %>
-      <%= button_to "Disconnect",
-        settings_organization_provider_connection_path(provider_connection),
+      <%= button_to settings_organization_provider_connection_path(provider_connection),
         method: :delete,
-        class: "btn btn-ghost btn-sm text-error",
-        form: {data: {turbo_confirm: "Disconnect #{provider_connection.name}?"}} %>
+        class: "btn btn-ghost btn-sm btn-square text-error",
+        form: {data: {turbo_confirm: "Disconnect #{provider_connection.name}?"}},
+        title: "Disconnect",
+        aria: {label: "Disconnect #{provider_connection.name}"} do %>
+        <i class="ti ti-plug-connected-x text-lg" aria-hidden="true"></i>
+      <% end %>
     <% elsif provider_connection.disconnected? %>
       <span class="text-sm text-base-content/55">Disconnected</span>
     <% end %>

@@ -1,0 +1,61 @@
+<%# locals: (current: nil) %>
+
+<% navigation_sections = [
+  {
+    label: "Publish",
+    items: [
+      {key: :calendar, label: "Calendar", icon: "ti-calendar"},
+      {key: :posts, label: "Posts", icon: "ti-stack-2"},
+      {key: :approvals, label: "Approvals", icon: "ti-circle-check"},
+      {key: :campaigns, label: "Campaigns", icon: "ti-flag"}
+    ]
+  },
+  {
+    label: "Engage",
+    items: [
+      {key: :inbox, label: "Inbox", icon: "ti-inbox"}
+    ]
+  },
+  {
+    label: "Library",
+    items: [
+      {key: :library, label: "Media", icon: "ti-photo"}
+    ]
+  },
+  {
+    label: "Insights",
+    items: [
+      {key: :analytics, label: "Analytics", icon: "ti-chart-bar"}
+    ]
+  }
+] %>
+
+<nav aria-label="Main navigation">
+  <% navigation_sections.each_with_index do |section, index| %>
+    <section class="<%= "mt-8" if index.positive? %>">
+      <h2 class="mb-3 px-2 text-xs font-medium uppercase text-base-content/45">
+        <%= section.fetch(:label) %>
+      </h2>
+
+      <ul class="flex w-full flex-col gap-1">
+        <% section.fetch(:items).each do |item| %>
+          <li>
+            <%= link_to "#",
+              class: class_names(
+                "btn btn-ghost btn-block h-auto min-h-0 justify-start gap-2 py-1.5 font-normal",
+                "bg-base-200 text-base-content/70 font-medium": current == item.fetch(:key),
+                "text-base-content/45": current != item.fetch(:key)
+              ) do %>
+              <i
+                class="ti <%= item.fetch(:icon) %> text-base"
+                aria-hidden="true"
+              ></i>
+
+              <span><%= item.fetch(:label) %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+</nav>

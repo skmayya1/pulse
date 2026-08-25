@@ -2,7 +2,7 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application"
+import { application } from "./application";
 
-import AutoDismissController from "./auto_dismiss_controller"
-application.register("auto-dismiss", AutoDismissController)
+import AutoDismissController from "./auto_dismiss_controller";
+application.register("auto-dismiss", AutoDismissController);

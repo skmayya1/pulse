@@ -12,8 +12,8 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
-  # Allow temporary ngrok endpoints used for local OAuth callbacks.
-  config.hosts << /.*\.ngrok-free\.app/
+  # Allow requests forwarded from the local Cloudflare tunnel.
+  config.hosts << "local.skmayya.dev"
 
   # Enable server timing.
   config.server_timing = true

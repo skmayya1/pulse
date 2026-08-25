@@ -21,12 +21,20 @@ RSpec.describe "Settings" do
     expect(response).to redirect_to(new_organization_path)
   end
 
+  it "redirects the settings root to profile" do
+    membership = create(:organization_membership)
+    sign_in(membership.user)
+
+    get settings_path
+
+    expect(response).to redirect_to(settings_profile_path)
+  end
+
   it "renders each settings section for an organization member" do
     membership = create(:organization_membership)
     sign_in(membership.user)
 
     [
-      settings_path,
       settings_profile_path,
       settings_preferences_path,
       settings_notifications_path,
@@ -59,6 +67,7 @@ RSpec.describe "Settings" do
       :channel,
       key: "instagram",
       name: "Instagram",
+      provider: :instagram,
       icon: "channels/instagram.png",
       position: 1
     )
@@ -112,6 +121,62 @@ RSpec.describe "Settings" do
 
     expect(response).to have_http_status(:unprocessable_content)
     expect(response.body).to include("Name can&#39;t be blank")
+  end
+
+  it "renders the profile form for the signed-in user" do
+    membership = create(:organization_membership)
+    membership.user.update!(name: "Ada Lovelace")
+    sign_in(membership.user)
+
+    get settings_profile_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Profile", "Ada Lovelace", membership.user.email_address, "Save changes")
+    expect(response.body).to include("input", "fieldset")
+    expect(response.body).not_to include("This settings section is ready for its first controls.")
+  end
+
+  it "updates the signed-in user's profile name" do
+    membership = create(:organization_membership)
+    sign_in(membership.user)
+
+    patch settings_profile_path, params: {
+      user: {name: "Ada Lovelace"}
+    }
+
+    expect(response).to redirect_to(settings_profile_path)
+    expect(membership.user.reload.name).to eq("Ada Lovelace")
+  end
+
+  it "renders validation errors without updating the profile" do
+    membership = create(:organization_membership)
+    membership.user.update!(name: "Ada")
+    sign_in(membership.user)
+
+    patch settings_profile_path, params: {
+      user: {name: "A" * 101}
+    }
+
+    expect(response).to have_http_status(:unprocessable_content)
+    expect(response.body).to include("Name is too long")
+    expect(membership.user.reload.name).to eq("Ada")
+  end
+
+  it "renders the theme-change appearance controls on preferences" do
+    membership = create(:organization_membership)
+    sign_in(membership.user)
+
+    get settings_preferences_path
+
+    document = Nokogiri::HTML(response.body)
+    buttons = document.css("[data-set-theme]")
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Preferences", "Appearance")
+    expect(response.body).to include("cdn.jsdelivr.net/npm/theme-change@3.0.4/index.js")
+    expect(buttons.pluck("data-set-theme")).to eq(["", "light", "dark"])
+    expect(response.body).not_to include("Save changes")
+    expect(response.body).not_to include("This settings section is ready for its first controls.")
   end
 
   def sign_in(user)

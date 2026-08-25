@@ -13,9 +13,25 @@ RSpec.describe "Provider connections" do
     allow(SecureRandom).to receive(:random_number).and_return(123_456)
   end
 
-  it "starts OAuth for an organization admin without exposing secrets" do
+  it "starts Instagram OAuth through Instagram Login without exposing secrets" do
     membership = create(:organization_membership, role: :admin)
-    channel = create(:channel, key: "instagram", provider: :meta)
+    channel = create(:channel, key: "instagram", provider: :instagram)
+    sign_in(membership.user)
+
+    with_provider_environment do
+      post settings_organization_channel_provider_connections_path(channel.key)
+    end
+
+    query = CGI.parse(URI.parse(response.location).query)
+    expect(response).to redirect_to(%r{\Ahttps://www.instagram.com/oauth/authorize})
+    expect(query).to include("state", "client_id" => ["instagram-client"], "enable_fb_login" => ["false"])
+    expect(query.fetch("scope").first).to include("instagram_business_basic")
+    expect(response.location).not_to include("instagram-secret")
+  end
+
+  it "starts Facebook OAuth through Facebook Login for Business without exposing secrets" do
+    membership = create(:organization_membership, role: :admin)
+    channel = create(:channel, key: "facebook", provider: :meta)
     sign_in(membership.user)
 
     with_provider_environment do
@@ -24,7 +40,8 @@ RSpec.describe "Provider connections" do
 
     query = CGI.parse(URI.parse(response.location).query)
     expect(response).to redirect_to(%r{\Ahttps://www.facebook.com/})
-    expect(query).to include("state", "client_id" => ["meta-client"])
+    expect(query).to include("state", "client_id" => ["meta-client"], "config_id" => ["meta-config"])
+    expect(query).not_to have_key("scope")
     expect(response.location).not_to include("meta-secret")
   end
 
@@ -131,13 +148,17 @@ RSpec.describe "Provider connections" do
   end
 
   def with_provider_environment
-    original = ENV.to_h.slice("APP_HOST", "META_CLIENT_ID", "META_CLIENT_SECRET")
+    keys = %w[APP_HOST INSTAGRAM_CLIENT_ID INSTAGRAM_CLIENT_SECRET META_CLIENT_ID META_CLIENT_SECRET META_CONFIG_ID]
+    original = ENV.to_h.slice(*keys)
     ENV["APP_HOST"] = "http://localhost:3000"
+    ENV["INSTAGRAM_CLIENT_ID"] = "instagram-client"
+    ENV["INSTAGRAM_CLIENT_SECRET"] = "instagram-secret"
     ENV["META_CLIENT_ID"] = "meta-client"
     ENV["META_CLIENT_SECRET"] = "meta-secret"
+    ENV["META_CONFIG_ID"] = "meta-config"
     yield
   ensure
-    %w[APP_HOST META_CLIENT_ID META_CLIENT_SECRET].each do |key|
+    keys.each do |key|
       original.key?(key) ? ENV[key] = original.fetch(key) : ENV.delete(key)
     end
   end

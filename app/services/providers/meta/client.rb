@@ -1,26 +1,34 @@
 module Providers
   module Meta
     class Client < BaseClient
-      def authorization_url(state:, channel:)
-        scopes = %w[pages_show_list pages_read_engagement]
-        scopes << "instagram_basic" if channel.key == "instagram"
+      def initialize(config:, callback_url:, connection: nil)
+        super
+        raise ConfigurationError, "Provider is not configured" if config.config_id.blank?
+      end
 
+      def authorization_url(state:, channel:)
         query = URI.encode_www_form(
           client_id: config.client_id,
           redirect_uri: callback_url,
           response_type: "code",
-          scope: scopes.join(","),
+          config_id: config.config_id,
           state:
         )
         "https://www.facebook.com/#{config.api_version}/dialog/oauth?#{query}"
       end
 
       def exchange_code(code:)
-        payload = post_form(graph_url("oauth/access_token"), body: {
+        short_lived = post_form(graph_url("oauth/access_token"), body: {
           client_id: config.client_id,
           client_secret: config.client_secret,
           redirect_uri: callback_url,
           code:
+        })
+        payload = post_form(graph_url("oauth/access_token"), body: {
+          grant_type: "fb_exchange_token",
+          client_id: config.client_id,
+          client_secret: config.client_secret,
+          fb_exchange_token: short_lived.fetch("access_token")
         })
         identity = get(
           graph_url("me"),
@@ -33,12 +41,10 @@ module Providers
 
       def discover_accounts(token_set:, channel:)
         payload = get(graph_url("me/accounts"), params: {
-          fields: "id,name,access_token,picture{url},instagram_business_account{id,username,name,profile_picture_url}"
+          fields: "id,name,access_token,picture{url}"
         }, headers: bearer_headers(token_set.access_token))
 
-        Array(payload["data"]).filter_map do |page|
-          (channel.key == "instagram") ? instagram_candidate(page, token_set) : facebook_candidate(page, token_set)
-        end
+        Array(payload["data"]).map { |page| facebook_candidate(page, token_set) }
       end
 
       def refresh(token_set:)
@@ -83,21 +89,7 @@ module Providers
         )
       end
 
-      def instagram_candidate(page, token_set)
-        account = page["instagram_business_account"]
-        return unless account
-
-        account_candidate(
-          account:,
-          token_set:,
-          handle: account["username"],
-          avatar_url: account["profile_picture_url"],
-          access_token: page["access_token"],
-          metadata: {"facebook_page_id" => page["id"]}
-        )
-      end
-
-      def account_candidate(account:, token_set:, handle:, avatar_url:, access_token:, metadata: {})
+      def account_candidate(account:, token_set:, handle:, avatar_url:, access_token:)
         AccountCandidate.new(
           provider_account_id: account.fetch("id"),
           provider_identity_id: token_set.provider_identity_id,
@@ -106,9 +98,9 @@ module Providers
           avatar_url:,
           access_token: access_token.presence || token_set.access_token,
           refresh_token: token_set.refresh_token,
-          expires_at: token_set.expires_at,
+          expires_at: nil,
           scopes: token_set.scopes,
-          metadata:
+          metadata: {}
         )
       end
     end

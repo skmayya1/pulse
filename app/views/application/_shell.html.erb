@@ -1,0 +1,9 @@
+<%# locals: (organization:, user:, current: nil) %>
+
+<div class="flex min-h-screen bg-base-100">
+  <%= render "application/sidebar", organization:, user:, current: current %>
+
+  <main class="min-w-0 flex-1">
+    <%= yield %>
+  </main>
+</div>

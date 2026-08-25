@@ -1,0 +1,40 @@
+<% content_for :title, "#{@page.fetch(:title)} · Settings · Pulse" %>
+
+<%= render "settings/layout", page: @page do %>
+  <h1 class="text-lg font-semibold text-base-content">Profile</h1>
+
+  <%= form_with model: @user,
+    url: settings_profile_path,
+    method: :patch,
+    class: "mt-6 max-w-2xl space-y-8" do |form| %>
+    <% if @user.errors.any? %>
+      <div class="alert alert-error" role="alert">
+        <span><%= @user.errors.full_messages.to_sentence %></span>
+      </div>
+    <% end %>
+
+    <div class="space-y-5">
+      <fieldset class="fieldset">
+        <%= form.label :name, "Display name", class: "fieldset-legend" %>
+
+        <%= form.text_field :name,
+          maxlength: 100,
+          autocomplete: "name",
+          class: "input w-full" %>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <%= form.label :email_address, "Email", class: "fieldset-legend" %>
+
+        <%= form.email_field :email_address,
+          disabled: true,
+          autocomplete: "email",
+          class: "input w-full" %>
+      </fieldset>
+    </div>
+
+    <div class="flex justify-end border-t border-base-300 pt-6">
+      <%= form.submit "Save changes", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+<% end %>
