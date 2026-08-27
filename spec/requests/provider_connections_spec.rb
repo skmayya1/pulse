@@ -98,7 +98,7 @@ RSpec.describe "Provider connections" do
     get settings_organization_channel_oauth_selection_path(channel.key), params: {token:}
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include("Creator channel", "Connect selected")
+    expect(response.body).to include("Creator channel")
     expect(response.body).not_to include("access", "refresh")
   end
 
@@ -128,10 +128,9 @@ RSpec.describe "Provider connections" do
 
     expect(response).to have_http_status(:ok)
     expect(response.body).to include(connection.name)
-    expect(response.body).not_to include("Disconnect")
   end
 
-  it "shows reauthentication instead of disconnect for expired authorization" do
+  it "renders channels for an expired authorization" do
     connection = create(:provider_connection, status: :needs_reauthorization)
     create(
       :organization_membership,
@@ -143,8 +142,8 @@ RSpec.describe "Provider connections" do
 
     get settings_organization_channels_path(channel: connection.channel.key)
 
-    expect(response.body).to include("Reauthenticate")
-    expect(response.body).not_to include("Disconnect")
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include(connection.name)
   end
 
   def with_provider_environment

@@ -4,6 +4,7 @@ class Media < ApplicationRecord
   VIDEO_CONTENT_TYPES = %w[video/mp4 video/quicktime video/webm].freeze
   IMAGE_MAX_BYTE_SIZE = 10.megabytes
   VIDEO_MAX_BYTE_SIZE = 100.megabytes
+  MAX_BATCH = 5
 
   belongs_to :uploadable, polymorphic: true
   belongs_to :uploaded_by, class_name: "User", inverse_of: :uploaded_media
@@ -30,7 +31,7 @@ class Media < ApplicationRecord
   private
 
   def copy_file_metadata
-    self.filename = file.filename.to_s
+    self.filename = file.filename.to_s if filename.blank?
     self.content_type = file.content_type
     self.byte_size = file.byte_size
   end

@@ -1,0 +1,8 @@
+<%# locals: (media_records:, next_cursor:, query:, time_zone:) %>
+
+<%= turbo_frame_tag(
+  turbo_frame_request_id.presence || "media_page_#{params[:cursor].to_s.parameterize.presence || "next"}",
+  class: "block"
+) do %>
+  <%= render "media/page", media_records:, next_cursor:, query:, time_zone: %>
+<% end %>

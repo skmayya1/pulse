@@ -1,0 +1,5 @@
+<%# locals: (media_records:, next_cursor:, query:, time_zone:) %>
+
+<%= turbo_frame_tag "media_list", class: "block w-full" do %>
+  <%= render "media/results", media_records:, next_cursor:, query:, time_zone: %>
+<% end %>

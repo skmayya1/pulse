@@ -62,4 +62,11 @@ RSpec.describe Media do
     expect(media.file).to be_attached
     expect(media.file.variant(:thumb)).to be_present
   end
+
+  it "keeps an explicit filename instead of the blob name" do
+    media = build(:media, filename: "Hero.png")
+
+    expect(media).to be_valid
+    expect(media.filename).to eq("Hero.png")
+  end
 end

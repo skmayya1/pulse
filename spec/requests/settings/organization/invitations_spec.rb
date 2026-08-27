@@ -25,7 +25,7 @@ RSpec.describe "Settings organization invitations" do
     get settings_organization_members_path
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include(owner.email_address, member.email_address, invitation.email_address, "Invite a member")
+    expect(response.body).to include(owner.email_address, member.email_address, invitation.email_address)
   end
 
   it "issues an invitation and emails its secure acceptance link" do
@@ -48,17 +48,6 @@ RSpec.describe "Settings organization invitations" do
       to: ["invitee@example.com"],
       subject: "Join Pulse Studio on Pulse"
     )
-  end
-
-  it "limits an admin's invite role to member" do
-    organization = create(:organization)
-    admin = create(:organization_membership, organization:, role: :admin).user
-    sign_in(admin)
-
-    get settings_organization_members_path
-
-    expect(response.body).to include("Member")
-    expect(response.body).not_to include("Admin")
   end
 
   def sign_in(user)

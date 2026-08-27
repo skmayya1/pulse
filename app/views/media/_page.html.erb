@@ -1,0 +1,17 @@
+<%# locals: (media_records:, next_cursor:, query:, time_zone:) %>
+
+<%= render partial: "media/row",
+  collection: media_records,
+  as: :media,
+  locals: {time_zone:} %>
+
+<% if next_cursor.present? %>
+  <%= turbo_frame_tag(
+    "media_page_#{next_cursor.parameterize.presence || "next"}",
+    src: media_index_path(q: query.presence, cursor: next_cursor),
+    class: "block",
+    loading: :lazy
+  ) do %>
+    <%= render "media/loading" %>
+  <% end %>
+<% end %>

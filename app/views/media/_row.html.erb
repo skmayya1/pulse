@@ -1,0 +1,45 @@
+<%# locals: (media:, time_zone:) %>
+
+<% creator = media.uploaded_by.name.presence || media.uploaded_by.email_address %>
+
+<div
+  class="
+    grid w-full min-h-16 items-center gap-x-4 border-b border-base-300
+    hover:bg-base-200
+  "
+  style="grid-template-columns: minmax(8rem, 24rem) 5.5rem minmax(7rem, 1fr) minmax(8rem, 1fr) minmax(7rem, 1fr);"
+>
+  <div class="min-w-0 truncate px-4 font-medium text-base-content">
+    <%= media.filename %>
+  </div>
+
+  <div class="px-2 py-2">
+    <% if media.image? && media.file.attached? %>
+      <div class="size-12 overflow-hidden rounded-box bg-base-200">
+        <%= image_tag media.file,
+          alt: media.filename,
+          class: "size-full object-cover" %>
+      </div>
+    <% else %>
+      <span
+        class="
+          grid size-12 place-items-center rounded-box bg-base-200
+          text-base-content/60
+        "
+        aria-label="Video"
+      >
+        <i class="ti ti-video text-lg" aria-hidden="true"></i>
+      </span>
+    <% end %>
+  </div>
+
+  <div class="px-4 text-sm text-base-content/60">
+    <%= media.updated_at.in_time_zone(time_zone).to_fs(:short) %>
+  </div>
+
+  <div class="truncate px-4 text-sm text-base-content"><%= creator %></div>
+
+  <div class="px-4 text-sm text-base-content/60">
+    <%= media.created_at.in_time_zone(time_zone).to_fs(:short) %>
+  </div>
+</div>

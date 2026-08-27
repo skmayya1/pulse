@@ -19,7 +19,7 @@
   {
     label: "Library",
     items: [
-      {key: :library, label: "Media", icon: "ti-photo"}
+      {key: :library, label: "Media", icon: "ti-photo", path: media_index_path}
     ]
   },
   {
@@ -40,7 +40,7 @@
       <ul class="flex w-full flex-col gap-1">
         <% section.fetch(:items).each do |item| %>
           <li>
-            <%= link_to "#",
+            <%= link_to item.fetch(:path, "#"),
               class: class_names(
                 "btn btn-ghost btn-block h-auto min-h-0 justify-start gap-2 py-1.5 font-normal",
                 "bg-base-200 text-base-content/70 font-medium": current == item.fetch(:key),

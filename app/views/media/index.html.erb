@@ -1,0 +1,49 @@
+<% content_for :title, "Media · Pulse" %>
+
+<%= render "application/shell",
+  organization: current_organization,
+  user: current_user,
+  current: :library do %>
+  <div class="flex min-h-full flex-col">
+    <header class="border-b border-base-300 px-6 py-8 lg:px-10">
+      <div class="flex min-h-16 items-center justify-between gap-6">
+        <h1 class="text-3xl font-semibold tracking-tight text-base-content">
+          Media
+        </h1>
+
+        <button
+          type="button"
+          class="btn border-base-300 bg-base-100 text-base-content"
+          onclick="document.getElementById('create_media_modal').showModal()"
+        >
+          <i class="ti ti-plus text-lg" aria-hidden="true"></i>
+          Create media
+        </button>
+      </div>
+
+      <%= form_with url: media_index_path,
+        method: :get,
+        class: "mt-8 max-w-md",
+        data: {turbo_frame: "media_list"} do |form| %>
+        <%= form.search_field :q,
+          value: @query,
+          placeholder: "Search by filename",
+          class: "input w-full",
+          autocomplete: "off",
+          aria: {label: "Search media"},
+          data: {
+            controller: "input",
+            action: "input->input#submit search->input#submitNow"
+          } %>
+      <% end %>
+    </header>
+
+    <%= turbo_frame_tag "media_list",
+      src: media_index_path(q: @query.presence),
+      class: "block w-full" do %>
+      <%= render "media/loading", rows: 8 %>
+    <% end %>
+  </div>
+
+  <%= render "media/form", media: @media_form || Media.new %>
+<% end %>
