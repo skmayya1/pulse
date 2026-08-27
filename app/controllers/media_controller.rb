@@ -33,6 +33,18 @@ class MediaController < ApplicationController
     end
   end
 
+  def destroy
+    media = policy_scope(Media).find(params[:id])
+    authorize media
+    result = DestroyMediaService.call(media:)
+
+    if result.success?
+      redirect_to media_index_path, notice: "Media deleted."
+    else
+      redirect_to media_index_path, alert: "This media is attached to a post and can't be deleted."
+    end
+  end
+
   private
 
   def search

@@ -1,9 +1,11 @@
 <%# locals: (media_records:, next_cursor:, query:, time_zone:) %>
 
-<%= render partial: "media/row",
-  collection: media_records,
-  as: :media,
-  locals: {time_zone:} %>
+<% media_records.each do |media| %>
+  <%= render "media/row",
+    media:,
+    time_zone:,
+    can_destroy: policy(media).destroy? %>
+<% end %>
 
 <% if next_cursor.present? %>
   <%= turbo_frame_tag(

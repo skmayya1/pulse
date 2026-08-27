@@ -10,7 +10,7 @@ class Media < ApplicationRecord
   belongs_to :uploaded_by, class_name: "User", inverse_of: :uploaded_media
   has_many :media_attachments, dependent: :restrict_with_error
   has_many :posts, through: :media_attachments
-  has_one_attached :file do |attachable|
+  has_one_attached :file, dependent: :purge_later do |attachable|
     attachable.variant :thumb, resize_to_limit: [400, 400]
   end
 

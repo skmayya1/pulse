@@ -100,6 +100,30 @@ RSpec.describe "Media" do
     expect(response).to redirect_to(media_index_path)
   end
 
+  it "deletes media uploaded by the current user" do
+    membership = create(:organization_membership)
+    media = create(:media, uploadable: membership.organization, uploaded_by: membership.user)
+    sign_in(membership.user)
+
+    expect {
+      delete media_path(media)
+    }.to change(Media, :count).by(-1)
+
+    expect(response).to redirect_to(media_index_path)
+  end
+
+  it "does not delete another organization's media" do
+    membership = create(:organization_membership)
+    media = create(:media)
+    sign_in(membership.user)
+
+    expect {
+      delete media_path(media)
+    }.not_to change(Media, :count)
+
+    expect(response).to have_http_status(:not_found)
+  end
+
   it "rejects more than five files" do
     membership = create(:organization_membership)
     sign_in(membership.user)

@@ -12,6 +12,18 @@ RSpec.describe MediaPolicy do
     expect(policy_for(member, media)).to be_create
   end
 
+  it "allows the uploader or an organization admin to delete library media" do
+    organization = create(:organization)
+    uploader = create_member(organization, :member)
+    other = create_member(organization, :member)
+    admin = create_member(organization, :admin)
+    media = create(:media, uploadable: organization, uploaded_by: uploader)
+
+    expect(policy_for(uploader, media)).to be_destroy
+    expect(policy_for(admin, media)).to be_destroy
+    expect(policy_for(other, media)).not_to be_destroy
+  end
+
   it "scopes library media to the member's organizations" do
     included = create(:media)
     excluded = create(:media)

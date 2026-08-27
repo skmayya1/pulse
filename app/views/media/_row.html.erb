@@ -1,4 +1,4 @@
-<%# locals: (media:, time_zone:) %>
+<%# locals: (media:, time_zone:, can_destroy:) %>
 
 <% creator = media.uploaded_by.name.presence || media.uploaded_by.email_address %>
 
@@ -7,7 +7,7 @@
     grid w-full min-h-16 items-center gap-x-4 border-b border-base-300
     hover:bg-base-200
   "
-  style="grid-template-columns: minmax(8rem, 24rem) 5.5rem minmax(7rem, 1fr) minmax(8rem, 1fr) minmax(7rem, 1fr);"
+  style="grid-template-columns: minmax(8rem, 24rem) 5.5rem minmax(7rem, 1fr) minmax(8rem, 1fr) minmax(7rem, 1fr) 3.5rem;"
 >
   <div class="min-w-0 truncate px-4 font-medium text-base-content">
     <%= media.filename %>
@@ -41,5 +41,41 @@
 
   <div class="px-4 text-sm text-base-content/60">
     <%= media.created_at.in_time_zone(time_zone).to_fs(:short) %>
+  </div>
+
+  <div class="flex items-center justify-end px-2">
+    <% if can_destroy %>
+      <div class="dropdown dropdown-end">
+        <div
+          tabindex="0"
+          role="button"
+          class="btn btn-ghost btn-square btn-sm"
+          aria-label="Action"
+        >
+          <i class="ti ti-dots text-lg" aria-hidden="true"></i>
+        </div>
+
+        <ul
+          tabindex="-1"
+          class="
+            dropdown-content z-1 flex w-44 flex-col gap-1 rounded-box
+            border border-base-300 bg-base-100 p-2 shadow-sm
+          "
+        >
+          <li>
+            <%= button_to media_path(media),
+              method: :delete,
+              class: "btn btn-ghost btn-block h-auto min-h-0 justify-start gap-2 py-1.5 font-normal text-error",
+              data: {
+                turbo_frame: "_top",
+                turbo_confirm: "Delete this media?"
+              } do %>
+              <i class="ti ti-trash text-base" aria-hidden="true"></i>
+              Delete
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
   </div>
 </div>

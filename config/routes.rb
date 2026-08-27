@@ -39,7 +39,7 @@ Rails.application.routes.draw do
     to: "provider_connection_oauth#show",
     as: :provider_connection_oauth_callback
 
-  resources :media, only: [:index, :create]
+  resources :media, only: [:index, :create, :destroy]
 
   root "home#index"
 end
