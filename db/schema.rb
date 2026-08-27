@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_27_173640) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_192446) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -126,12 +126,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_173640) do
   end
 
   create_table "posts", force: :cascade do |t|
+    t.text "caption"
     t.datetime "created_at", null: false
     t.bigint "created_by_id", null: false
     t.bigint "organization_id", null: false
+    t.string "status", default: "draft", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_posts_on_created_by_id"
+    t.index ["organization_id", "status", "created_at"], name: "index_posts_on_organization_status_and_created", order: { created_at: :desc }
     t.index ["organization_id"], name: "index_posts_on_organization_id"
+    t.check_constraint "status::text = ANY (ARRAY['draft'::character varying, 'scheduled'::character varying, 'published'::character varying, 'failed'::character varying]::text[])", name: "posts_status_check"
   end
 
   create_table "provider_connections", force: :cascade do |t|
