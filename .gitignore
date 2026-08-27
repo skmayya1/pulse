@@ -35,3 +35,4 @@
 .DS_Store
 .ruby-lsp/
 /.dev/
+nvim.log

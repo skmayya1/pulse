@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_25_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_173640) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.string "content_type"
+    t.datetime "created_at", null: false
+    t.string "filename", null: false
+    t.string "key", null: false
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "channels", force: :cascade do |t|
     t.jsonb "configuration", default: {}, null: false
@@ -26,6 +54,37 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_120000) do
     t.datetime "updated_at", null: false
     t.index ["enabled", "position"], name: "index_channels_on_enabled_and_position"
     t.index ["key"], name: "index_channels_on_key", unique: true
+  end
+
+  create_table "media", force: :cascade do |t|
+    t.bigint "byte_size", null: false
+    t.string "content_type", null: false
+    t.datetime "created_at", null: false
+    t.integer "duration_seconds"
+    t.string "filename", null: false
+    t.integer "height"
+    t.string "kind", null: false
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "uploadable_id", null: false
+    t.string "uploadable_type", null: false
+    t.bigint "uploaded_by_id", null: false
+    t.integer "width"
+    t.index ["uploadable_type", "uploadable_id", "kind"], name: "index_media_on_uploadable_type_and_uploadable_id_and_kind"
+    t.index ["uploaded_by_id"], name: "index_media_on_uploaded_by_id"
+    t.check_constraint "kind::text = ANY (ARRAY['image'::character varying, 'video'::character varying]::text[])", name: "media_kind_check"
+  end
+
+  create_table "media_attachments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "media_id", null: false
+    t.integer "position", default: 0, null: false
+    t.bigint "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["media_id"], name: "index_media_attachments_on_media_id"
+    t.index ["post_id", "media_id"], name: "index_media_attachments_on_post_id_and_media_id", unique: true
+    t.index ["post_id", "position"], name: "index_media_attachments_on_post_id_and_position"
+    t.index ["post_id"], name: "index_media_attachments_on_post_id"
   end
 
   create_table "organization_invitations", force: :cascade do |t|
@@ -64,6 +123,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_120000) do
     t.string "name", null: false
     t.string "time_zone", default: "UTC", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "created_by_id", null: false
+    t.bigint "organization_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_posts_on_created_by_id"
+    t.index ["organization_id"], name: "index_posts_on_organization_id"
   end
 
   create_table "provider_connections", force: :cascade do |t|
@@ -120,10 +188,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_120000) do
     t.index ["google_uid"], name: "index_users_on_google_uid", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "media", "users", column: "uploaded_by_id"
+  add_foreign_key "media_attachments", "media"
+  add_foreign_key "media_attachments", "posts"
   add_foreign_key "organization_invitations", "organizations"
   add_foreign_key "organization_invitations", "users", column: "invited_by_id"
   add_foreign_key "organization_memberships", "organizations"
   add_foreign_key "organization_memberships", "users"
+  add_foreign_key "posts", "organizations"
+  add_foreign_key "posts", "users", column: "created_by_id"
   add_foreign_key "provider_connections", "channels"
   add_foreign_key "provider_connections", "organizations"
   add_foreign_key "provider_connections", "users", column: "connected_by_id"

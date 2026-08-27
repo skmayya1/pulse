@@ -6,6 +6,11 @@ class User < ApplicationRecord
     inverse_of: :invited_by
   has_many :provider_connections, foreign_key: :connected_by_id, dependent: :restrict_with_error,
     inverse_of: :connected_by
+  has_many :media, as: :uploadable, dependent: :restrict_with_error
+  has_many :uploaded_media, class_name: "Media", foreign_key: :uploaded_by_id,
+    inverse_of: :uploaded_by, dependent: :restrict_with_error
+  has_many :created_posts, class_name: "Post", foreign_key: :created_by_id,
+    inverse_of: :created_by, dependent: :restrict_with_error
 
   normalizes :email_address, with: ->(email_address) { email_address.strip.downcase }
   normalizes :google_uid, with: ->(google_uid) { google_uid.strip.presence }
