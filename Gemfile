@@ -20,7 +20,7 @@ gem "cssbundling-rails"
 gem "redis", ">= 5.0"
 gem "dotenv-rails"
 gem "strong_migrations"
-gem "faraday", "~> 2.0"
+gem "faraday", "~> 2.14"
 
 # Background jobs, authorization, and reusable server-rendered UI
 gem "sidekiq"
